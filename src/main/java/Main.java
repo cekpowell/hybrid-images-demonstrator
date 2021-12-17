@@ -1,3 +1,7 @@
+import Controller.SystemController;
+import Model.Model;
+import View.App.Dashboard;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -8,11 +12,6 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
-    // constants
-    private static final int width = 1300;
-    private static final int height = 800;
-    private static final String titleName = "Hybrid Images";
-    private static final String authorName = "charles powell";
 
     /**
      * Main method - entry point for the program.
@@ -35,12 +34,15 @@ public class Main extends Application {
         // creating new dashboard
         Dashboard dashboard = new Dashboard();
 
+        // configuring the system controller
+        SystemController.init(dashboard);
+
         // creating the scene
-        Scene scene = new Scene(dashboard, Main.width, Main.height);
+        Scene scene = new Scene(dashboard, Model.applicationWidth, Model.applicationHeight);
 
         // configuring the stage
         stage.setScene(scene);
-        stage.setTitle(titleName + " by " + authorName);
+        stage.setTitle(Model.applicationTitle + " by " + Model.applicationAuthor);
 
         // loading the stage
         stage.show();

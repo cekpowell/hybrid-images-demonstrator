@@ -1,5 +1,11 @@
+package View.App;
+
+import View.HybridImageDisplayer.HybridImageDisplayer;
+import View.ImageLoader.ImageLoader;
+
 import java.io.File;
 
+import Controller.SystemController;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -106,6 +112,29 @@ public class Dashboard extends BorderPane{
             this.lowImageLoader.getToolbar().setSigmaValue(highSigma);
             this.highImageLoader.getToolbar().setSigmaValue(lowSigma);
         });
+
+        // make hybrid image button
+        this.makeHybridButton.setOnAction((e) -> {
+            // gathering needed content
+            File lowImageFile = this.lowImageLoader.getImageFile();
+            File highImageFile = this.highImageLoader.getImageFile();
+            String lowSigmaString = this.lowImageLoader.getToolbar().getSigmaValue();
+            String highSigmaString = this.highImageLoader.getToolbar().getSigmaValue();
+
+            try{
+                // checking sigma values
+                float lowSigmaValue = Float.parseFloat(lowSigmaString);
+                float highSigmaValue = Float.parseFloat(highSigmaString);
+
+                // making the hybrid image
+                SystemController.getInstance().makeHybridImage(lowImageFile, lowSigmaValue, highImageFile, highSigmaValue);
+            }
+            catch(Exception ex){
+                // TODO handle this error case
+
+                ex.printStackTrace();
+            }
+        });
     }
 
     ///////////////////////
@@ -136,6 +165,10 @@ public class Dashboard extends BorderPane{
     /////////////////////////
     // GETTERS AND SETTERS //
     /////////////////////////
+
+    public HybridImageDisplayer getHybridImageDisplayer(){
+        return this.hybridImageDisplayer;
+    }
 
     public Button getSwapImagesButton(){
         return this.swapImagesButton;

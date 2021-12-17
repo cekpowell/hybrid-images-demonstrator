@@ -1,3 +1,9 @@
+package View.ImageLoader;
+
+import Controller.FileManager;
+import Model.Model;
+import View.Tools.AppToolbar;
+
 import java.io.File;
 
 import javafx.scene.Node;
@@ -58,16 +64,13 @@ public class ImageLoaderToolbar extends AppToolbar{
 
         // load image
         this.loadImageButton.setOnAction((e) -> {
-            // configuring the file chooser to load a new file into the system
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Load Image");
-            //fileChooser.getExtensionFilters().addAll(FileType.getAllExtensionFilters()); // TODO make sure only image files can be opened
-
             // showing the open dialog
-            File selectedFile = fileChooser.showOpenDialog(this.getScene().getWindow());
+            File selectedFile = FileManager.openFile("Load Image", this.getScene().getWindow(), Model.imageExtensions);
 
             // checking if file was selected
             if (selectedFile != null) {
+                // TODO Make sure the image is square
+
                 // passing the file onto the image loader view
                 this.imageLoader.loadImageFromFile(selectedFile);
             }

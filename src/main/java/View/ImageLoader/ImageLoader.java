@@ -1,3 +1,9 @@
+package View.ImageLoader;
+
+import Model.Model;
+import View.App.Dashboard;
+import View.Tools.SectionTitle;
+
 import java.io.File;
 
 import javafx.geometry.Insets;
@@ -18,11 +24,6 @@ public class ImageLoader extends BorderPane{
     // constants
     private static int imagePreviewWidth = 200;
     private static int imagePreviewHeight = 200;
-    private static Image noImageImage = new Image("/img/question mark.png", 
-                                                  50, 
-                                                  50, 
-                                                  false, 
-                                                  false);
     
     // member variables
     private Dashboard dashboard;
@@ -111,7 +112,7 @@ public class ImageLoader extends BorderPane{
      */
     private void displayNoImageView(){
         // displaying no image image
-        this.imageView.setImage(ImageLoader.noImageImage);
+        this.imageView.setImage(Model.noImageImage);
 
         // disabling clear button
         this.clearImageButton.setDisable(true);
@@ -125,8 +126,6 @@ public class ImageLoader extends BorderPane{
     public void loadImageFromFile(File file){
         // setting the file into the system
         this.imageFile = file;
-
-        // TODO Make sure the image is square
 
         // displaying the image in the view
         this.imageView.setImage(new Image(this.imageFile.toURI().toString(), 
