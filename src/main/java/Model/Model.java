@@ -23,19 +23,35 @@ public class Model {
     // APPLICATION CONFIGURATION //
     ///////////////////////////////
 
-    public static final String APP_TITLE = "Hybrid Images";
-    public static final String APP_AUTHOR = "charles powell";
+    public static final String APP_TITLE = "Hybrid Images Demonstrator";
+    public static final String APP_AUTHOR = "Charles Powell";
     public static final int APP_WIDTH = 1300;
-    public static final int APP_HEIGHT = 800;
+    public static final int APP_HEIGHT = 850;
 
     ////////////
     // IMAGES //
     ////////////
 
-    public static final Image NO_IMAGE_IMAGE = new Image("img/icons/question mark.png");
-    public static final int NO_IMAGE_IMAGE_WIDTH = 60;
-    public static final Image LOADING_ANIMATION = new Image("img/icons/loading.gif");
+    // image view placeholders
+    public static final Image NO_IMAGE_IMAGE = new Image("img/icons/Question Mark.png");
+    public static final int NO_IMAGE_IMAGE_WIDTH = 100;
+    public static final Image LOADING_ANIMATION = new Image("img/placeholders/loading.gif");
     public static final int LOADING_ANIMATION_WIDTH = 200;
+
+    // icons
+    public static final Image ADD = new Image("img/icons/Add.png");
+    public static final Image CROSS = new Image("img/icons/Cross.png");
+    public static final Image DOUBLE_ADD = new Image("img/icons/Double Add.png");
+    public static final Image DOUBLE_MINUS = new Image("img/icons/Double Minus.png");
+    public static final Image DOWN_ARROW = new Image("img/icons/Down Arrow.png");
+    public static final Image HYBRID = new Image("img/icons/DNA.png");
+    public static final Image HYBRID_100 = new Image("img/icons/DNA_100.png");
+    public static final Image UP_ARROW = new Image("img/icons/Up Arrow.png");
+    public static final Image MINUS = new Image("img/icons/Minus.png");
+    public static final Image OPEN = new Image("img/icons/Open Document.png");
+    public static final Image MAKE_HYBRID = new Image("img/icons/Refresh.png");
+    public static final Image SAVE_AS = new Image("img/icons/Save As.png");
+    public static final Image SWITCH = new Image("img/icons/Up Down Arrow.png");
 
     // SAMPLE IMAGES //
 

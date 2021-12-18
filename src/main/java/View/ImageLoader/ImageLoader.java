@@ -1,10 +1,6 @@
 package View.ImageLoader;
 
 import java.io.File;
-
-import com.android.dx.cf.iface.Field;
-
-import Controller.Validator;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -15,8 +11,10 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+import Controller.Validator;
 import Model.Model;
 import View.App.Dashboard;
 import View.Tools.PopUpWindow;
@@ -43,7 +41,7 @@ public class ImageLoader extends BorderPane{
     // INITIALIZING //
     //////////////////
 
-    public ImageLoader(Dashboard dashboard, String title){
+    public ImageLoader(Dashboard dashboard, String title, Image titleIcon){
         // initializing
         this.dashboard = dashboard;
         this.toolbar = new ImageLoaderToolbar(this);
@@ -51,14 +49,14 @@ public class ImageLoader extends BorderPane{
         this.imageView = new ImageView();
         this.imageName = "";
         this.loadedImageLabel = new Label();
-        this.clearImageButton = new Button("Clear");
+        this.clearImageButton = new Button("Clear", new ImageView(Model.CROSS));
 
         ///////////////////////////
         // CONTAINERS AND EXTRAS //
         ///////////////////////////
 
         // section title
-        SectionTitle titleLabel = new SectionTitle(title, Pos.CENTER);
+        SectionTitle titleLabel = new SectionTitle(title, new ImageView(titleIcon), Pos.CENTER);
 
         // container for title and toolbar
         VBox titleAndToolbarContainer = new VBox();
@@ -67,8 +65,9 @@ public class ImageLoader extends BorderPane{
 
         // container for image preview
         VBox imageViewContainer = new VBox();
-        imageViewContainer.getChildren().addAll(this.imageView, this.loadedImageLabel);
+        imageViewContainer.getChildren().addAll(this.loadedImageLabel, this.imageView);
         imageViewContainer.setAlignment(Pos.CENTER);
+        VBox.setVgrow(this.imageView, Priority.ALWAYS);
 
         // container for clear button
         HBox clearImageContainer = new HBox(this.clearImageButton);

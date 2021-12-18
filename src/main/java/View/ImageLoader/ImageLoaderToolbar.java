@@ -4,15 +4,15 @@ import java.io.File;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.ParsePosition;
-import java.util.Arrays;
 
+import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-
+import javafx.scene.image.ImageView;
+import javafx.util.converter.FloatStringConverter;
 import Controller.FileManager;
 import Model.Model;
 import View.Tools.AppToolbar;
@@ -27,6 +27,10 @@ public class ImageLoaderToolbar extends AppToolbar{
     private static int sigmaValueTextFieldWidth = 50;
     private static String sigmaValueTextFormat = "0.0";
     private static String initialSigmaValue = "1.0";
+    private static float sigmaValueLargeChange = 1.0f;
+    private static float sigmaValueSmallChange = 0.1f;
+    private static float minSigmaValue = 0.0f;
+    private static float maxSigmaValue = Float.MAX_VALUE;
     
     // member variables
     private ImageLoader imageLoader;
@@ -46,14 +50,14 @@ public class ImageLoaderToolbar extends AppToolbar{
      */
     public ImageLoaderToolbar(ImageLoader imageLoader){
         // initializing
-        super(10,10,10);
+        super(Orientation.HORIZONTAL, 10,10,10);
         this.imageLoader = imageLoader;
-        this.loadImageButton = new Button("Load");
+        this.loadImageButton = new Button("Load", new ImageView(Model.OPEN));
         this.sigmaValueTextField = new TextField(ImageLoaderToolbar.initialSigmaValue);
-        this.incrementSigmaValueButtonLarge = new Button("++");
-        this.decrementSigmaValueButtonLarge = new Button("--");
-        this.incrementSigmaValueButtonSmall = new Button("+");
-        this.decrementSigmaValueButtonSmall = new Button("-");
+        this.incrementSigmaValueButtonLarge = new Button("", new ImageView(Model.DOUBLE_ADD));
+        this.decrementSigmaValueButtonLarge = new Button("",new ImageView(Model.DOUBLE_MINUS));
+        this.incrementSigmaValueButtonSmall = new Button("", new ImageView(Model.ADD));
+        this.decrementSigmaValueButtonSmall = new Button("", new ImageView(Model.MINUS));
         
         ///////////////////////////
         // CONTAINERS AND EXTRAS //
@@ -84,7 +88,7 @@ public class ImageLoaderToolbar extends AppToolbar{
             ParsePosition parsePosition = new ParsePosition( 0 );
             Object object = sigmaValueFormat.parse( c.getControlNewText(), parsePosition );
 
-            if ( object == null || parsePosition.getIndex() < c.getControlNewText().length() )
+            if ( object == null || parsePosition.getIndex() < c.getControlNewText().length())
             {
                 return null;
             }
@@ -95,8 +99,8 @@ public class ImageLoaderToolbar extends AppToolbar{
         }));
 
         // adding contents to toolbar
-        this.addGroupsLeftContainerWithSepSplice(new Node[] {loadImageLabel, this.loadImageButton},
-                                                 new Node[] {sigmaValueLabel, 
+        this.addGroupsFirstContainerWithSepSplice(new Node[] {loadImageLabel, this.loadImageButton});
+        this.addGroupsLastContainerWithSepSplice(new Node[] {sigmaValueLabel, 
                                                              this.sigmaValueTextField, 
                                                              this.incrementSigmaValueButtonLarge, 
                                                              this.decrementSigmaValueButtonLarge, 
@@ -130,10 +134,13 @@ public class ImageLoaderToolbar extends AppToolbar{
             float currentValue = Float.parseFloat(this.sigmaValueTextField.getText());
 
             // incrementing value
-            float newValue = currentValue + 1;
+            float newValue = currentValue + ImageLoaderToolbar.sigmaValueLargeChange;
 
-            // putting new value into textfield
-            this.sigmaValueTextField.setText(String.valueOf(sigmaValueFormat.format(newValue)));
+             // making sure new value is valid
+            if((newValue >= ImageLoaderToolbar.minSigmaValue && newValue <= ImageLoaderToolbar.maxSigmaValue)){
+                // putting new value into textfield
+                this.sigmaValueTextField.setText(String.valueOf(sigmaValueFormat.format(newValue)));
+            }
         });
 
         // decrement sigma value large
@@ -142,10 +149,14 @@ public class ImageLoaderToolbar extends AppToolbar{
             float currentValue = Float.parseFloat(this.sigmaValueTextField.getText());
 
             // incrementing value
-            float newValue = currentValue - 1;
+            float newValue = currentValue - ImageLoaderToolbar.sigmaValueLargeChange;
 
-            // putting new value into textfield
-            this.sigmaValueTextField.setText(String.valueOf(sigmaValueFormat.format(newValue)));
+             // making sure new value is valid
+            if((newValue >= ImageLoaderToolbar.minSigmaValue && newValue <= ImageLoaderToolbar.maxSigmaValue)){
+
+                // putting new value into textfield
+                this.sigmaValueTextField.setText(String.valueOf(sigmaValueFormat.format(newValue)));
+            }
         });
 
         // increment sigma value small
@@ -154,10 +165,13 @@ public class ImageLoaderToolbar extends AppToolbar{
             float currentValue = Float.parseFloat(this.sigmaValueTextField.getText());
 
             // incrementing value
-            float newValue = currentValue + 0.1f;
+            float newValue = currentValue + ImageLoaderToolbar.sigmaValueSmallChange;
 
-            // putting new value into textfield
-            this.sigmaValueTextField.setText(String.valueOf(sigmaValueFormat.format(newValue)));
+            // making sure new value is valid
+            if((newValue >= ImageLoaderToolbar.minSigmaValue && newValue <= ImageLoaderToolbar.maxSigmaValue)){
+                // putting new value into textfield
+                this.sigmaValueTextField.setText(String.valueOf(sigmaValueFormat.format(newValue)));
+            }
         });
 
         // decremment sigma value small
@@ -166,10 +180,13 @@ public class ImageLoaderToolbar extends AppToolbar{
             float currentValue = Float.parseFloat(this.sigmaValueTextField.getText());
 
             // incrementing value
-            float newValue = currentValue - 0.1f;
+            float newValue = currentValue - ImageLoaderToolbar.sigmaValueSmallChange;
 
-            // putting new value into textfield
-            this.sigmaValueTextField.setText(String.valueOf(sigmaValueFormat.format(newValue)));
+             // making sure new value is valid
+            if((newValue >= ImageLoaderToolbar.minSigmaValue && newValue <= ImageLoaderToolbar.maxSigmaValue)){
+                // putting new value into textfield
+                this.sigmaValueTextField.setText(String.valueOf(sigmaValueFormat.format(newValue)));
+            }
         });
     }
 

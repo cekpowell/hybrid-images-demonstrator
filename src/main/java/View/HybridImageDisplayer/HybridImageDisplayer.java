@@ -1,13 +1,16 @@
 package View.HybridImageDisplayer;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 import Controller.FileManager;
@@ -34,7 +37,6 @@ public class HybridImageDisplayer extends BorderPane {
     
     // member variables
     private Dashboard dashboard;
-    private HybridImageDisplayerToolbar toolbar;
     private ImageView lowPassImageView;
     private Image originalLowPassImage;
     private Button saveLowPassImageButton;
@@ -56,17 +58,16 @@ public class HybridImageDisplayer extends BorderPane {
     public HybridImageDisplayer(Dashboard dashboard){
         // initializing
         this.dashboard = dashboard;
-        this.toolbar = new HybridImageDisplayerToolbar(this);
         this.lowPassImageView = new ImageView();
         this.originalLowPassImage = null;
-        this.saveLowPassImageButton = new Button("Save");
+        this.saveLowPassImageButton = new Button("Save", new ImageView(Model.SAVE_AS));
         this.highPassImageView = new ImageView();
         this.originalHighPassImage = null;
-        this.saveHighPassImageButton = new Button("Save");
+        this.saveHighPassImageButton = new Button("Save", new ImageView(Model.SAVE_AS));
         this.hybridImageView = new ImageView();
         this.originalHybridImage = null;
         this.hybridImageSlider = new Slider(HybridImageDisplayer.hybridImageSliderMinValue, HybridImageDisplayer.hybridImageSliderMaxValue, 1);
-        this.saveHybridImageButton = new Button("Save");
+        this.saveHybridImageButton = new Button("Save", new ImageView(Model.SAVE_AS));
 
         ///////////////////////////
         // CONTAINERS AND EXTRAS //
@@ -74,7 +75,7 @@ public class HybridImageDisplayer extends BorderPane {
 
         // low pass image view //
 
-        SectionTitle lowPassTitleLabel = new SectionTitle(HybridImageDisplayer.lowPassTitle, Pos.CENTER);
+        SectionTitle lowPassTitleLabel = new SectionTitle(HybridImageDisplayer.lowPassTitle, new ImageView(Model.DOWN_ARROW), Pos.CENTER);
         BorderPane lowPassContainer = new BorderPane();
 
         HBox saveLowPassContainer = new HBox(this.saveLowPassImageButton);
@@ -87,7 +88,7 @@ public class HybridImageDisplayer extends BorderPane {
 
         // high pass image view //
 
-        SectionTitle highPassTitleLabel = new SectionTitle(HybridImageDisplayer.highPassTitle, Pos.CENTER);
+        SectionTitle highPassTitleLabel = new SectionTitle(HybridImageDisplayer.highPassTitle, new ImageView(Model.UP_ARROW), Pos.CENTER);
         BorderPane highPassContainer = new BorderPane();
 
         HBox saveHighPassContainer = new HBox(this.saveHighPassImageButton);
@@ -97,16 +98,17 @@ public class HybridImageDisplayer extends BorderPane {
         highPassContainer.setTop(highPassTitleLabel);
         highPassContainer.setCenter(this.highPassImageView);
         highPassContainer.setBottom(saveHighPassContainer);
-        
+
         // container for low and high pass images
-        BorderPane lowAndHighPassContainer = new BorderPane();
-        lowAndHighPassContainer.setLeft(lowPassContainer);
-        lowAndHighPassContainer.setRight(highPassContainer);
-        BorderPane.setAlignment(lowPassContainer, Pos.CENTER);
-        BorderPane.setAlignment(highPassContainer, Pos.CENTER);
+        HBox lowAndHighPassContainer = new HBox();
+        lowAndHighPassContainer.getChildren().addAll(lowPassContainer, highPassContainer);
+        HBox.setHgrow(lowPassContainer, Priority.ALWAYS);
+        HBox.setHgrow(highPassContainer, Priority.ALWAYS);
+        lowAndHighPassContainer.setAlignment(Pos.CENTER);
+        lowAndHighPassContainer.setFillHeight(true);
 
         // hybrid image view
-        SectionTitle hybridImageViewTitle = new SectionTitle(HybridImageDisplayer.hybridImageTitle, Pos.CENTER);
+        SectionTitle hybridImageViewTitle = new SectionTitle(HybridImageDisplayer.hybridImageTitle, new ImageView(Model.HYBRID), Pos.CENTER);
         BorderPane hybridContainer = new BorderPane();
 
         VBox hybridControlsContainer = new VBox();
@@ -118,6 +120,14 @@ public class HybridImageDisplayer extends BorderPane {
         hybridContainer.setTop(hybridImageViewTitle);
         hybridContainer.setCenter(this.hybridImageView);
         hybridContainer.setBottom(hybridControlsContainer);
+
+        // container for all
+        VBox allContainer = new VBox();
+        allContainer.getChildren().addAll(lowAndHighPassContainer, new Separator(Orientation.HORIZONTAL), hybridContainer);
+        //VBox.setVgrow(lowAndHighPassContainer2, Priority.ALWAYS);
+        VBox.setVgrow(hybridContainer, Priority.ALWAYS);
+        allContainer.setAlignment(Pos.CENTER);
+        allContainer.setFillWidth(true);
 
         /////////////////
         // CONFIGURING //
@@ -134,8 +144,7 @@ public class HybridImageDisplayer extends BorderPane {
         this.hybridImageSlider.setShowTickLabels(true);
 
         // putting contents into view
-        this.setTop(lowAndHighPassContainer);
-        this.setCenter(hybridContainer);
+        this.setCenter(allContainer);
 
         // displaying default view
         this.displayNoImageView();
