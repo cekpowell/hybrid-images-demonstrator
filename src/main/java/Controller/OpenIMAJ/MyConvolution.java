@@ -3,14 +3,8 @@ package Controller.OpenIMAJ;
 import org.openimaj.image.FImage;
 import org.openimaj.image.processor.SinglebandImageProcessor;
 
-/**
- * COMP3204: Computer Vision
- * 
- * Coursework 2: Exercise 1
- * 
- * Performing template convolution on a given image.
- * 
- * @author Charles Powell
+/** 
+ * Performs template convolution on a given image, using a given template.
  */
 public class MyConvolution implements SinglebandImageProcessor<Float, FImage> {
 

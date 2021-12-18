@@ -4,12 +4,13 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
-import Controller.FileManager;
-import Model.Model;
-import View.Tools.AppToolbar;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+
+import Controller.FileManager;
+import Model.Model;
+import View.Tools.AppToolbar;
 
 /**
  * Toolbar for the hybrid image displayer view within the application.
@@ -49,14 +50,14 @@ public class HybridImageDisplayerToolbar extends AppToolbar{
         // save image
         this.saveButton.setOnAction((e) -> {
             // getting file name (low image name "and" high image name)
-            String name = FileManager.removeFileExtension(this.hybridImageDisplayer.getDashboard().getLowImageLoader().getImageFile().getName()) 
+            String name = FileManager.removeFileExtension(this.hybridImageDisplayer.getDashboard().getLowImageLoader().getImageName()) 
                           + " and " 
-                          + FileManager.removeFileExtension(this.hybridImageDisplayer.getDashboard().getHighImageLoader().getImageFile().getName());
+                          + FileManager.removeFileExtension(this.hybridImageDisplayer.getDashboard().getHighImageLoader().getImageName());
 
             System.out.println(name);
 
             // getting file to write to
-            File outFile = FileManager.getNewSaveFile(this.getScene().getWindow(), name, Model.IMAGE_EXT_SAVING);
+            File outFile = FileManager.getNewSaveFile(this.getScene().getWindow(), name, Model.IMAGE_EXT_FILT_SAVE);
 
             // sving to file if one was selected
             if(outFile != null){

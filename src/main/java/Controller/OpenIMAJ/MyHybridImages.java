@@ -5,13 +5,8 @@ import org.openimaj.image.MBFImage;
 import org.openimaj.image.processing.convolution.Gaussian2D;
 
 /**
- * COMP3204: Computer Vision
- * 
- * Coursework 2: Exercise 2
- * 
- * Combining two images together to create a hybrid image.
- * 
- * @author Charles Powell
+ * Handles the creation of hybrid images by combining low and
+ * high pass versions of two images.
  */
 public class MyHybridImages {
 

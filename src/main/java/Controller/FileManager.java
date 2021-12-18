@@ -9,7 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 
@@ -290,13 +289,12 @@ public class FileManager {
      * "." in the filename.
      * 
      * @param filename The name of the file who's extension is being gathered.
-     * @return The extension of the provided filename.
-     * @throws Exception If the file does not have an extension.
+     * @return The extension of the provided filename. Null if there is no extension.
      */
-    public static String getFileExtensionWith(String filename) throws Exception{
+    public static String getFileExtensionWith(String filename){
         // file must have an extension (which follows ".")
         if(!filename.contains(".")){
-            throw new Exception();
+            return "";
         }
 
         // reversing the string

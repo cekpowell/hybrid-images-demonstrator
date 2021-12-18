@@ -1,21 +1,22 @@
 package View.ImageLoader;
 
-import Controller.FileManager;
-import Model.Model;
-import View.Tools.AppToolbar;
-
 import java.io.File;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.ParsePosition;
 import java.util.Arrays;
 
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.control.TextFormatter;
+
+import Controller.FileManager;
+import Model.Model;
+import View.Tools.AppToolbar;
+import View.Tools.PopUpWindow;
 
 /**
  * Toolbar for an image loader within the application.
@@ -24,8 +25,8 @@ public class ImageLoaderToolbar extends AppToolbar{
 
     // constants
     private static int sigmaValueTextFieldWidth = 50;
+    private static String sigmaValueTextFormat = "0.0";
     private static String initialSigmaValue = "1.0";
-    private static KeyCode[] acceptableSigmaValueKeyCodes = new KeyCode[] {KeyCode.DECIMAL, KeyCode.BACK_SPACE, KeyCode.LEFT, KeyCode.RIGHT};
     
     // member variables
     private ImageLoader imageLoader;
@@ -47,7 +48,7 @@ public class ImageLoaderToolbar extends AppToolbar{
         // initializing
         super(10,10,10);
         this.imageLoader = imageLoader;
-        this.loadImageButton = new Button("Load Image");
+        this.loadImageButton = new Button("Load");
         this.sigmaValueTextField = new TextField(ImageLoaderToolbar.initialSigmaValue);
         this.incrementSigmaValueButtonLarge = new Button("++");
         this.decrementSigmaValueButtonLarge = new Button("--");
@@ -65,21 +66,42 @@ public class ImageLoaderToolbar extends AppToolbar{
         /////////////////
         // CONFIGURING //
         /////////////////
-
-        // configuring sigma value textfield
+        
+        // sigma value text field width
         this.sigmaValueTextField.setMaxWidth(ImageLoaderToolbar.sigmaValueTextFieldWidth);
 
-        DecimalFormat sigmaValueFormat = new DecimalFormat("0.0");
+        // creating text formatter for sigma value text field
+        DecimalFormat sigmaValueFormat = new DecimalFormat(ImageLoaderToolbar.sigmaValueTextFormat);
         sigmaValueFormat.setRoundingMode(RoundingMode.HALF_EVEN);
 
+        // congiruing text formatter of sigma value text field
+        this.sigmaValueTextField.setTextFormatter( new TextFormatter<>(c ->{
+            if ( c.getControlNewText().isEmpty() )
+            {
+                return c;
+            }
+
+            ParsePosition parsePosition = new ParsePosition( 0 );
+            Object object = sigmaValueFormat.parse( c.getControlNewText(), parsePosition );
+
+            if ( object == null || parsePosition.getIndex() < c.getControlNewText().length() )
+            {
+                return null;
+            }
+            else
+            {
+                return c;
+            }
+        }));
+
         // adding contents to toolbar
-        this.addGroupsLeftContainerWithSepSplice(new Node[] {loadImageLabel, this.loadImageButton});
-        this.addGroupsRightContainerWithSepSplice(new Node[] {sigmaValueLabel, 
-                                                              this.sigmaValueTextField, 
-                                                              this.incrementSigmaValueButtonLarge, 
-                                                              this.decrementSigmaValueButtonLarge, 
-                                                              this.incrementSigmaValueButtonSmall, 
-                                                              this.decrementSigmaValueButtonSmall});
+        this.addGroupsLeftContainerWithSepSplice(new Node[] {loadImageLabel, this.loadImageButton},
+                                                 new Node[] {sigmaValueLabel, 
+                                                             this.sigmaValueTextField, 
+                                                             this.incrementSigmaValueButtonLarge, 
+                                                             this.decrementSigmaValueButtonLarge, 
+                                                             this.incrementSigmaValueButtonSmall, 
+                                                             this.decrementSigmaValueButtonSmall});
 
         ////////////
         // EVENTS //
@@ -88,31 +110,16 @@ public class ImageLoaderToolbar extends AppToolbar{
         // load image
         this.loadImageButton.setOnAction((e) -> {
             // showing the open dialog
-            File selectedFile = FileManager.openFile("Load Image", this.getScene().getWindow(), Model.IMAGE_EXT_LOADING);
+            File selectedFile = FileManager.openFile("Load Image", this.getScene().getWindow(), Model.IMAGE_EXT_FILT_LOAD);
 
             // checking if file was selected
             if (selectedFile != null) {
-                // TODO Make sure the image is square
-
                 // passing the file onto the image loader view
-                this.imageLoader.loadImageFromFile(selectedFile);
-            }
-        });
-
-        // text field key pressed
-        this.sigmaValueTextField.setOnKeyReleased((e) -> {
-            // consuming the key press unless it was number, backspace or arrows
-            if(!Arrays.asList(ImageLoaderToolbar.acceptableSigmaValueKeyCodes).contains(e.getCode())){
-                e.consume();
-            }
-        });
-
-        this.sigmaValueTextField.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
-            @Override 
-            public void handle(KeyEvent keyEvent) {
-                // consuming the key press unless it was number, backspace or arrows
-                if(!Arrays.asList(ImageLoaderToolbar.acceptableSigmaValueKeyCodes).contains(keyEvent.getCode())){
-                    keyEvent.consume();
+                try{
+                    this.imageLoader.loadImageFromFile(selectedFile);
+                }
+                catch(Exception ex){
+                    PopUpWindow.showErrorWindow(this.getScene().getWindow(), ex);
                 }
             }
         });

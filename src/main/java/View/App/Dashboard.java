@@ -1,8 +1,5 @@
 package View.App;
 
-import View.HybridImageDisplayer.HybridImageDisplayer;
-import View.ImageLoader.ImageLoader;
-
 import java.io.File;
 
 import Controller.SystemController;
@@ -11,12 +8,18 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Popup;
+import View.HybridImageDisplayer.HybridImageDisplayer;
+import View.ImageLoader.ImageLoader;
+import View.ImageLoader.SampleImageLoaderForm;
+import View.Tools.PopUpWindow;
 
 /**
- * The main view for the application.
+ * Main view for the application.
  */
 public class Dashboard extends BorderPane{
 
@@ -30,6 +33,7 @@ public class Dashboard extends BorderPane{
     private ImageLoader lowImageLoader;
     private ImageLoader highImageLoader;
     private HybridImageDisplayer hybridImageDisplayer;
+    private Button loadSampleImagesButton;
     private Button swapImagesButton;
     private Button swapSigmaValuesButton;
     private Button makeHybridButton;
@@ -47,6 +51,7 @@ public class Dashboard extends BorderPane{
         this.lowImageLoader = new ImageLoader(this, Dashboard.lowImageTitle);
         this.highImageLoader = new ImageLoader(this, Dashboard.highImageTitle);
         this.hybridImageDisplayer = new HybridImageDisplayer(this);
+        this.loadSampleImagesButton = new Button("Load Sample Images");
         this.swapImagesButton = new Button("Swap Images");
         this.swapSigmaValuesButton = new Button("Swap Sigma Values");
         this.makeHybridButton = new Button("Make Hybrid");
@@ -56,14 +61,14 @@ public class Dashboard extends BorderPane{
         ///////////////////////////
 
         // container to swap high and low images
-        HBox swapContainer = new HBox();
-        swapContainer.getChildren().addAll(this.swapImagesButton, this.swapSigmaValuesButton);
-        swapContainer.setAlignment(Pos.CENTER);
-        swapContainer.setPadding(new Insets(10));
-        swapContainer.setSpacing(10);
+        HBox loaderControlsContainer = new HBox();
+        loaderControlsContainer.getChildren().addAll(this.loadSampleImagesButton, this.swapImagesButton, this.swapSigmaValuesButton);
+        loaderControlsContainer.setAlignment(Pos.CENTER);
+        loaderControlsContainer.setPadding(new Insets(10));
+        loaderControlsContainer.setSpacing(10);
 
         // container for high and low image loaders
-        SplitPane highAndLowContainer = new SplitPane(this.lowImageLoader, swapContainer, this.highImageLoader);
+        SplitPane highAndLowContainer = new SplitPane(this.lowImageLoader, loaderControlsContainer, this.highImageLoader);
         highAndLowContainer.setDividerPositions(0.45, 0.55);
         highAndLowContainer.setOrientation(Orientation.VERTICAL);
 
@@ -91,15 +96,29 @@ public class Dashboard extends BorderPane{
         // EVENTS //
         ////////////
 
+        // load sample images 
+        this.loadSampleImagesButton.setOnAction((e) -> {
+            // creating the sample images form
+            SampleImageLoaderForm sampleImageLoaderForm = new SampleImageLoaderForm(this.lowImageLoader, this.highImageLoader);
+
+            // showing the form
+            sampleImageLoaderForm.showForm(this.getScene().getWindow());
+        });
+
         // swap images
         this.swapImagesButton.setOnAction((e) -> {
             // caching the files from each image loader
-            File lowImageFile = this.lowImageLoader.getImageFile();
-            File highImageFile = this.highImageLoader.getImageFile();
+            Image lowImage = this.lowImageLoader.getImage();
+            Image highImage = this.highImageLoader.getImage();
 
             // swapping the images
-            this.lowImageLoader.loadImageFromFile(highImageFile);
-            this.highImageLoader.loadImageFromFile(lowImageFile);
+            try{
+                this.lowImageLoader.setImage(highImage);
+                this.highImageLoader.setImage(lowImage);
+            }
+            catch(Exception ex){
+                PopUpWindow.showErrorWindow(this.getScene().getWindow(), ex);
+            }
         });
 
         // swap sigma values
@@ -116,8 +135,8 @@ public class Dashboard extends BorderPane{
         // make hybrid image button
         this.makeHybridButton.setOnAction((e) -> {
             // gathering needed content
-            File lowImageFile = this.lowImageLoader.getImageFile();
-            File highImageFile = this.highImageLoader.getImageFile();
+            Image lowImage = this.lowImageLoader.getImage();
+            Image highImage = this.highImageLoader.getImage();
             String lowSigmaString = this.lowImageLoader.getToolbar().getSigmaValue();
             String highSigmaString = this.highImageLoader.getToolbar().getSigmaValue();
 
@@ -127,12 +146,16 @@ public class Dashboard extends BorderPane{
                 float highSigmaValue = Float.parseFloat(highSigmaString);
 
                 // making the hybrid image
-                SystemController.getInstance().makeHybridImage(lowImageFile, lowSigmaValue, highImageFile, highSigmaValue);
+                SystemController.getInstance().makeHybridImage(lowImage, lowSigmaValue, highImage, highSigmaValue);
             }
             catch(Exception ex){
-                // TODO handle this error case
+                // unable to make hybrid image
+                
+                //displaying error message
+                PopUpWindow.showErrorWindow(this.getScene().getWindow(), ex);
 
-                ex.printStackTrace();
+                // refreshing image views
+                this.hybridImageDisplayer.displayNoImageView();
             }
         });
     }
@@ -150,7 +173,7 @@ public class Dashboard extends BorderPane{
         // ENABLING/DISABLING BUTTONS //
 
         // enabling buttons if both images are loaded
-        if((this.lowImageLoader.getImageFile() != null) && (this.highImageLoader.getImageFile() != null)){
+        if((this.lowImageLoader.imageIsLoaded()) && (this.highImageLoader.imageIsLoaded())){
             this.swapImagesButton.setDisable(false);
             this.makeHybridButton.setDisable(false);
         }

@@ -2,21 +2,22 @@ package Controller;
 
 import java.io.File;
 
-import org.openimaj.image.FImage;
 import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.MBFImage;
 
-import Controller.OpenIMAJ.MyHybridImages;
-import View.App.Dashboard;
+import javafx.animation.PauseTransition;
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
+import Controller.OpenIMAJ.MyHybridImages;
+import View.App.Dashboard;
 
 /**
- * Serves as the main controller for the application. Adopts the 
- * singleton pattern and uses instance methods to control the system's
- * data flow.
+ * Main controller for the application. Adopts the singleton pattern and 
+ * uses instance methods to control the system's data flow.
  */
 public class SystemController {
     
@@ -78,57 +79,83 @@ public class SystemController {
      * Makes a hybrid image of the two provided images, and displays this image within the
      * dashboard.
      * 
-     * @param lowImageFile The low image for the hybrid image.
+     * @param lowImage The low image for the hybrid image.
      * @param lowSigma The sigma value for the low image.
-     * @param highImageFile The high image for the hybrid image.
+     * @param highImage The high image for the hybrid image.
      * @param highSigma The sigma value for the high image.
      */
-    public void makeHybridImage(File lowImageFile, float lowSigma, File highImageFile, float highSigma) throws Exception{
+    public void makeHybridImage(Image lowJFXImage, float lowSigma, Image highJFXImage, float highSigma) throws Exception{
+        // VALIDATING //
+
+        Validator.validateLowAndHighImages(lowJFXImage, highJFXImage);
+
+        // VALIDATED //
+
+        /**
+         * The loading animation and making of the hybrid image are run on 
+         * different threads so that the loading animation is actually displayed 
+         * (otherwise the JavaFX waits for the hybrid image to be made before 
+         * updating the scene).
+         */
+
+        // LOADING ANIMATION //
+
+        // starting the process within the hybrid image displayer
+        Runnable displayLoadingAnimation = () -> { 
+            this.dashboard.getHybridImageDisplayer().startHybridImageDisplayProcess(); 
+        };
+        new Thread(displayLoadingAnimation).start();
+
+        // MAKING HYBRID IMAGE //
+
         // creating MBFImage objects
-        MBFImage lowImage = ImageUtilities.readMBF(lowImageFile);
-        MBFImage highImage = ImageUtilities.readMBF(highImageFile);
+        MBFImage lowMBFImage = SystemController.jfxImageToMBFImage(lowJFXImage);
+        MBFImage highMBFImage = SystemController.jfxImageToMBFImage(highJFXImage);
 
-        // getting low pass image
-        MBFImage lowPassImage = MyHybridImages.getLowPassVersion(lowImage, lowSigma);
+        Runnable makeHybridImage = () -> { 
+            // getting low pass image
+            MBFImage lowPassImage = MyHybridImages.getLowPassVersion(lowMBFImage, lowSigma);
 
-        // displaying low pass image
-        this.dashboard.getHybridImageDisplayer().displayLowPassImage(SystemController.getJavaFXImageFromOpenIMAJImage(lowPassImage), lowSigma);
+            // displaying low pass image
+            this.dashboard.getHybridImageDisplayer().displayLowPassImage(SystemController.mbfImageToJFXImage(lowPassImage), lowSigma);
 
-        // getting high pass image
-        MBFImage highPassImage = MyHybridImages.getHighPassVersion(highImage, highSigma);
+            // getting high pass image
+            MBFImage highPassImage = MyHybridImages.getHighPassVersion(highMBFImage, highSigma);
 
-        // displaying high pass image
-        this.dashboard.getHybridImageDisplayer().displayHighPassImage(SystemController.getJavaFXImageFromOpenIMAJImage(highPassImage), highSigma);
+            // displaying high pass image
+            this.dashboard.getHybridImageDisplayer().displayHighPassImage(SystemController.mbfImageToJFXImage(highPassImage), highSigma);
 
-        // creating hybrid image object
-        MBFImage hybridImage = MyHybridImages.makeHybrid(lowImage, lowSigma, highImage, highSigma);
+            // creating hybrid image object
+            MBFImage hybridImage = MyHybridImages.makeHybrid(lowMBFImage, lowSigma, highMBFImage, highSigma);
 
-        // displaying the hybrid image within the hybrid image displayer
-        this.dashboard.getHybridImageDisplayer().displayHybridImage(SystemController.getJavaFXImageFromOpenIMAJImage(hybridImage));
+            // displaying the hybrid image within the hybrid image displayer
+            this.dashboard.getHybridImageDisplayer().displayHybridImage(SystemController.mbfImageToJFXImage(hybridImage));
+        };
+        new Thread(makeHybridImage).start();
     }
 
     /**
      * Converts an OpenIMAJ MBFImage object into a JavaFX Image object.
      * 
-     * @param openIMAJImage The OpenIMAJ MBGImage object to be converted into a JavaFX Image
+     * @param mbfImage The OpenIMAJ MBGImage object to be converted into a JavaFX Image
      * object.
      * @return The OpenIMAJ MBFImage object converted into a JavaFX Image object.
      */
-    private static Image getJavaFXImageFromOpenIMAJImage(MBFImage openIMAJImage){
+    private static Image mbfImageToJFXImage(MBFImage mbfImage){
         // setting up the image writer
-        WritableImage javaFXImage = new WritableImage(openIMAJImage.getWidth(), openIMAJImage.getHeight());
-        PixelWriter pixelWriter = javaFXImage.getPixelWriter();
+        WritableImage jfxImage = new WritableImage(mbfImage.getWidth(), mbfImage.getHeight());
+        PixelWriter pixelWriter = jfxImage.getPixelWriter();
 
         // normalising the openIMAJ image (so that all value are between 0.0 and 1.0)
-        openIMAJImage.normalise();
+        mbfImage.normalise();
 
         // iterating over pixels in open imaj image
-        for(int row = 0; row < openIMAJImage.getHeight(); row++){
-            for(int col = 0; col < openIMAJImage.getWidth(); col++){
+        for(int row = 0; row < mbfImage.getHeight(); row++){
+            for(int col = 0; col < mbfImage.getWidth(); col++){
                 // gathering open imaj image pixel values at this point
-                float r = openIMAJImage.getBand(0).pixels[row][col];
-                float g = openIMAJImage.getBand(1).pixels[row][col];
-                float b = openIMAJImage.getBand(2).pixels[row][col];
+                float r = mbfImage.getBand(0).pixels[row][col];
+                float g = mbfImage.getBand(1).pixels[row][col];
+                float b = mbfImage.getBand(2).pixels[row][col];
 
                 // writing pixel values into javafx image
                 pixelWriter.setColor(col, row, Color.color(r,g,b));
@@ -136,6 +163,37 @@ public class SystemController {
         }
 
         // returning the javafx image object
-        return javaFXImage;
+        return jfxImage;
     }
-}
+
+    /**
+     * Converts a JavaFX Image to an OpenIMAJ MBFImage.
+     * 
+     * @param jfxImage The Java FX image being converted into an MBFImage.
+     * @return The MBF equivalent of the JavaFX Image.
+     */
+    private static MBFImage jfxImageToMBFImage(Image jfxImage){
+        // setting up the MBFImage
+        MBFImage mbfImage = new MBFImage((int) jfxImage.getWidth(), (int) jfxImage.getHeight());
+
+        // gathering pixel reader
+        PixelReader pixelReader = jfxImage.getPixelReader();
+
+        // iterating through pixels within jfx image
+        // iterating over pixels in open imaj image
+        for(int row = 0; row < jfxImage.getHeight(); row++){
+            for(int col = 0; col < jfxImage.getWidth(); col++){
+                // gathering color at this point
+                Color color = pixelReader.getColor(col, row);
+
+                // putting this colour into the same point of the MBFImage
+                mbfImage.getBand(0).pixels[row][col] = (float) color.getRed();
+                mbfImage.getBand(1).pixels[row][col] = (float) color.getGreen();
+                mbfImage.getBand(2).pixels[row][col] = (float) color.getBlue();
+            }
+        }
+
+        // returning the converted image
+        return mbfImage;
+    }
+}   
