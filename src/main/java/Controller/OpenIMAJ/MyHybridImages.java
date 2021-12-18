@@ -45,11 +45,23 @@ public class MyHybridImages {
         /**
          * Combine low- and high-pass images together to create hybrid image.
          */
-        MBFImage hybridImage = lowPassImage.add(highPassImage);
+        MBFImage hybridImage = MyHybridImages.combineLowAndHighPassImages(lowPassImage, highPassImage);
 
         // returning the hybrid image
         return hybridImage;
-	}
+    }
+
+    /**
+     * Combines low and high pass images to create a hybrid image.
+     * 
+     * @param lowPassImage The low pass version of an image.
+     * @param highPassImage The high pass version of an image.
+     * @return The combination of the low and high pass images.
+     */
+    public static MBFImage combineLowAndHighPassImages(MBFImage lowPassImage, MBFImage highPassImage){
+        // combining the images
+        return lowPassImage.add(highPassImage);
+    }
 
     /**
      * Returns a low-pass version of the image. The low pass version of the image
@@ -59,7 +71,7 @@ public class MyHybridImages {
      * @param sigma The sigma value used in the Gaussian filtering.
      * @return A low pass version of the image.
      */
-    private static MBFImage getLowPassVersion(MBFImage image, float sigma){
+    public static MBFImage getLowPassVersion(MBFImage image, float sigma){
 
         // creating a copy of the image (to become low pass version)
         MBFImage lowPassImage = image.clone();
@@ -97,7 +109,7 @@ public class MyHybridImages {
      * @param sigma The sigma value used in the Gaussian filtering.
      * @return A high-pass version of the image.
      */
-    private static MBFImage getHighPassVersion(MBFImage image, float sigma){
+    public static MBFImage getHighPassVersion(MBFImage image, float sigma){
 
         // creating a copy of the image (to become low pass version)
         MBFImage highPassImage = image.clone();

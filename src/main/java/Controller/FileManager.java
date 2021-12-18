@@ -9,7 +9,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import javax.imageio.ImageIO;
+
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.stage.FileChooser;
@@ -168,6 +173,30 @@ public class FileManager {
     }
 
     /**
+     * Attempts to write the provided content into a new file. A FileChooser is displayed
+     * that allows the user to select where the new file will be stored.
+     * 
+     * @param content The content being written into a file.
+     * @param window The window the FileChooser dialog will be displayed onto.
+     * @param initialFileName The initial filename for the new file.
+     * @param extensionFilters The extension filters for the new file.
+     * @throws Exception Thrown if the content could not be written into the new file.
+     */
+    public static void writeContentToNewFile(Image content, Window window, String initialFilename, ExtensionFilter[] extensionFilters) throws Exception{
+        // getting file to write to
+        File outFile = FileManager.getNewSaveFile(window, initialFilename, extensionFilters);
+
+        // sving to file if one was selected
+        if(outFile != null){
+            // getting file extension
+            String format  = FileManager.getFileExtensionWith(outFile.getName());
+
+            // getting buffered image
+            ImageIO.write(SwingFXUtils.fromFXImage(content, null), format, outFile);
+        }
+    }
+
+    /**
      * Helper method to open a FileChooser window and allow the user
      * to select a location to save a file to.
      * 
@@ -246,7 +275,7 @@ public class FileManager {
      * @return The filename without an extensionfilter if it has one.
      */
     public static String removeFileExtension(String filename){
-        if(filename.contains("\\.")){
+        if(filename.contains(".")){
             return filename.split("\\.")[0];
         }
         else{
@@ -272,10 +301,10 @@ public class FileManager {
 
         // reversing the string
         StringBuffer buffer = new StringBuffer(filename);
-        String reverseFilename = buffer.reverse().toString();
+        String reversedFilename = buffer.reverse().toString();
 
         // gathering reversed file extension (first sub-string in split on ".")
-        String reversedExtension = reverseFilename.split("\\.")[0];
+        String reversedExtension = reversedFilename.split("\\.")[0];
 
         // reversing the extension (back to normal)
         buffer = new StringBuffer(reversedExtension);

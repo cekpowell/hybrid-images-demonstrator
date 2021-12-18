@@ -46,7 +46,7 @@ public class Dashboard extends BorderPane{
         // initializing
         this.lowImageLoader = new ImageLoader(this, Dashboard.lowImageTitle);
         this.highImageLoader = new ImageLoader(this, Dashboard.highImageTitle);
-        this.hybridImageDisplayer = new HybridImageDisplayer();
+        this.hybridImageDisplayer = new HybridImageDisplayer(this);
         this.swapImagesButton = new Button("Swap Images");
         this.swapSigmaValuesButton = new Button("Swap Sigma Values");
         this.makeHybridButton = new Button("Make Hybrid");
@@ -165,6 +165,14 @@ public class Dashboard extends BorderPane{
     /////////////////////////
     // GETTERS AND SETTERS //
     /////////////////////////
+
+    public ImageLoader getLowImageLoader(){
+        return this.lowImageLoader;
+    }
+
+    public ImageLoader getHighImageLoader(){
+        return this.highImageLoader;
+    }
 
     public HybridImageDisplayer getHybridImageDisplayer(){
         return this.hybridImageDisplayer;

@@ -84,11 +84,21 @@ public class SystemController {
      * @param highSigma The sigma value for the high image.
      */
     public void makeHybridImage(File lowImageFile, float lowSigma, File highImageFile, float highSigma) throws Exception{
-        System.out.println("Making Hybrid image");
-
         // creating MBFImage objects
         MBFImage lowImage = ImageUtilities.readMBF(lowImageFile);
         MBFImage highImage = ImageUtilities.readMBF(highImageFile);
+
+        // getting low pass image
+        MBFImage lowPassImage = MyHybridImages.getLowPassVersion(lowImage, lowSigma);
+
+        // displaying low pass image
+        this.dashboard.getHybridImageDisplayer().displayLowPassImage(SystemController.getJavaFXImageFromOpenIMAJImage(lowPassImage), lowSigma);
+
+        // getting high pass image
+        MBFImage highPassImage = MyHybridImages.getHighPassVersion(highImage, highSigma);
+
+        // displaying high pass image
+        this.dashboard.getHybridImageDisplayer().displayHighPassImage(SystemController.getJavaFXImageFromOpenIMAJImage(highPassImage), highSigma);
 
         // creating hybrid image object
         MBFImage hybridImage = MyHybridImages.makeHybrid(lowImage, lowSigma, highImage, highSigma);

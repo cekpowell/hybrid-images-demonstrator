@@ -51,7 +51,7 @@ public class ImageLoader extends BorderPane{
         ///////////////////////////
 
         // section title
-        SectionTitle titleLabel = new SectionTitle(title);
+        SectionTitle titleLabel = new SectionTitle(title, Pos.CENTER);
 
         // container for title and toolbar
         VBox titleAndToolbarContainer = new VBox();
@@ -112,7 +112,7 @@ public class ImageLoader extends BorderPane{
      */
     private void displayNoImageView(){
         // displaying no image image
-        this.imageView.setImage(Model.noImageImage);
+        this.imageView.setImage(Model.NO_IMAGE_IMAGE);
 
         // disabling clear button
         this.clearImageButton.setDisable(true);
@@ -128,12 +128,13 @@ public class ImageLoader extends BorderPane{
         this.imageFile = file;
 
         // displaying the image in the view
-        this.imageView.setImage(new Image(this.imageFile.toURI().toString(), 
-                                          ImageLoader.imagePreviewWidth, 
-                                          ImageLoader.imagePreviewHeight, 
-                                          false, 
-                                          false));
+        this.imageView.setImage(new Image(this.imageFile.toURI().toString()));
         this.loadedImageLabel.setText(this.imageFile.getName());
+
+        // configuring size of image view window
+        this.imageView.setPreserveRatio(true);
+        this.imageView.setFitWidth(ImageLoader.imagePreviewWidth);
+        this.imageView.setFitHeight(ImageLoader.imagePreviewHeight);
 
         // enabling the clear image button
         this.clearImageButton.setDisable(false);

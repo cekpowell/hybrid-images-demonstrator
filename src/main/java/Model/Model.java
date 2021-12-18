@@ -19,16 +19,16 @@ public class Model {
     // APPLICATION CONFIGURATION //
     ///////////////////////////////
 
-    public static final String applicationTitle = "Hybrid Images";
-    public static final String applicationAuthor = "charles powell";
-    public static final int applicationWidth = 1300;
-    public static final int applicationHeight = 800;
+    public static final String APP_TITLE = "Hybrid Images";
+    public static final String APP_AUTHOR = "charles powell";
+    public static final int APP_WIDTH = 1300;
+    public static final int APP_HEIGHT = 800;
 
     ////////////
     // IMAGES //
     ////////////
 
-    public static Image noImageImage = new Image("/img/question mark.png", 
+    public static Image NO_IMAGE_IMAGE = new Image("/img/question mark.png", 
                                                   50, 
                                                   50, 
                                                   false, 
@@ -38,7 +38,7 @@ public class Model {
     // FILES //
     ///////////
 
-    public static ExtensionFilter[] imageExtensions = new ExtensionFilter[] {new ExtensionFilter("PNG (*.png)", "*.png"),
-                                                                             new ExtensionFilter("JPEG (*.jpeg)", "*.jpeg")};
-    
+    public static ExtensionFilter[] IMAGE_EXT_LOADING = new ExtensionFilter[] {new ExtensionFilter("Image (*.png, *jpeg)", "*.png", "*.jpeg")};
+    public static ExtensionFilter[] IMAGE_EXT_SAVING = new ExtensionFilter[] {new ExtensionFilter("PNG (*.png)", "*.png"),
+                                                                              new ExtensionFilter("JPEG (*.jpeg)", "*.jpeg")};
 }

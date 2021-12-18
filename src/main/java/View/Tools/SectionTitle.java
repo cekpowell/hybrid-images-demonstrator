@@ -1,5 +1,6 @@
 package View.Tools;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -30,7 +31,7 @@ public class SectionTitle extends HBox{
      * 
      * @param title The title.
      */
-    public SectionTitle(String title, ImageView image){
+    public SectionTitle(String title, ImageView image, Pos alignment){
         // initializing
         this.label = new Label(title);
         this.image = image;
@@ -46,7 +47,8 @@ public class SectionTitle extends HBox{
         
         this.getChildren().addAll(this.image, this.label);
         this.setSpacing(10);
-        this.setAlignment(Pos.CENTER_LEFT);
+        this.setPadding(new Insets(10));
+        this.setAlignment(alignment);
     }
 
     /**
@@ -54,7 +56,7 @@ public class SectionTitle extends HBox{
      * 
      * @param title The title.
      */
-    public SectionTitle(String title){
+    public SectionTitle(String title, Pos alignment){
         // initializing
         this.label = new Label(title);
 
@@ -68,7 +70,7 @@ public class SectionTitle extends HBox{
         ///////////////// 
         
         this.getChildren().addAll(this.label);
-        this.setSpacing(10);
-        this.setAlignment(Pos.CENTER_LEFT);
+        this.setPadding(new Insets(10));
+        this.setAlignment(alignment);
     }
 }

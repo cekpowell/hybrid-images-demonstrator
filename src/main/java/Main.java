@@ -38,11 +38,11 @@ public class Main extends Application {
         SystemController.init(dashboard);
 
         // creating the scene
-        Scene scene = new Scene(dashboard, Model.applicationWidth, Model.applicationHeight);
+        Scene scene = new Scene(dashboard, Model.APP_WIDTH, Model.APP_HEIGHT);
 
         // configuring the stage
         stage.setScene(scene);
-        stage.setTitle(Model.applicationTitle + " by " + Model.applicationAuthor);
+        stage.setTitle(Model.APP_TITLE + " by " + Model.APP_AUTHOR);
 
         // loading the stage
         stage.show();
