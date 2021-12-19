@@ -148,9 +148,9 @@ public class SampleImageLoaderForm extends InputForm{
             count++;
         }
 
-        /////////////////
-        // CONFIGURING //
-        /////////////////
+        //////////////////////
+        // CONFIGURING THIS //
+        //////////////////////
 
         // form settings 
         this.initModality(Modality.APPLICATION_MODAL);

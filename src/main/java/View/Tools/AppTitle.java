@@ -56,13 +56,13 @@ public class AppTitle extends HBox{
         this.authorLabel = new Label("by " + author.toLowerCase());
         this.imageView = new ImageView(image);
 
-        /////////////////
-        // CONFIGURING //
-        /////////////////
+        /////////////////////////
+        // CONFIGURING MEMBERS //
+        /////////////////////////
 
         // formatting the labels
-        titleLabel.setFont(Font.font(AppTitle.TITLE_FONT, AppTitle.TITLE_FONT_WEIGHT, AppTitle.TITLE_FONT_POSTURE, AppTitle.TITLE_FONT_SIZE));
-        authorLabel.setFont(Font.font(AppTitle.AUTHOR_FONT, AppTitle.AUTHOR_FONT_WEIGHT, AppTitle.AUTHOR_FONT_POSTURE, AppTitle.AUTHOR_FONT_SIZE));
+        this.titleLabel.setFont(Font.font(AppTitle.TITLE_FONT, AppTitle.TITLE_FONT_WEIGHT, AppTitle.TITLE_FONT_POSTURE, AppTitle.TITLE_FONT_SIZE));
+        this.authorLabel.setFont(Font.font(AppTitle.AUTHOR_FONT, AppTitle.AUTHOR_FONT_WEIGHT, AppTitle.AUTHOR_FONT_POSTURE, AppTitle.AUTHOR_FONT_SIZE));
 
         // adding the labels to the container
         this.container = new VBox();
@@ -72,6 +72,10 @@ public class AppTitle extends HBox{
         // configuring size of image
         this.imageView.setPreserveRatio(true);
         this.imageView.setFitWidth(AppTitle.IMAGE_SIZE);
+
+        //////////////////////
+        // CONFIGURING THIS //
+        //////////////////////
 
         // adding the container to the title
         this.getChildren().addAll(this.imageView, container);

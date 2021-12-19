@@ -31,6 +31,7 @@ public class SystemController {
      * @param dashboard The dashboard associated with this controller.
      */
     private SystemController(Dashboard dashboard){
+        // initializing member variables
         this.dashboard = dashboard;
     }
 

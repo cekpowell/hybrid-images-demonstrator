@@ -70,19 +70,11 @@ public class ImageLoaderToolbar extends AppToolbar{
         this.decrementSigmaValueButtonLarge = new Button("",new ImageView(Model.DOUBLE_MINUS));
         this.incrementSigmaValueButtonSmall = new Button("", new ImageView(Model.ADD));
         this.decrementSigmaValueButtonSmall = new Button("", new ImageView(Model.MINUS));
-        
-        ///////////////////////////
-        // CONTAINERS AND EXTRAS //
-        ///////////////////////////
 
-        // labels
-        Label loadImageLabel = new Label(ImageLoaderToolbar.LOAD_IMAGE_LABEL_TEXT);
-        Label sigmaValueLabel = new Label(ImageLoaderToolbar.SIGMA_VALUE_LABEL_TEXT);
+        /////////////////////////
+        // CONFIGURING MEMBERS //
+        /////////////////////////
 
-        /////////////////
-        // CONFIGURING //
-        /////////////////
-        
         // sigma value text field width
         this.sigmaValueTextField.setMaxWidth(ImageLoaderToolbar.SIGMA_VALUE_TEXTFIELD_WIDTH);
 
@@ -106,6 +98,18 @@ public class ImageLoaderToolbar extends AppToolbar{
                 return c;
             }
         }));
+        
+        ///////////////////////////
+        // CONTAINERS AND EXTRAS //
+        ///////////////////////////
+
+        // labels
+        Label loadImageLabel = new Label(ImageLoaderToolbar.LOAD_IMAGE_LABEL_TEXT);
+        Label sigmaValueLabel = new Label(ImageLoaderToolbar.SIGMA_VALUE_LABEL_TEXT);
+
+        //////////////////////
+        // CONFIGURING THIS //
+        //////////////////////
 
         // adding contents to toolbar
         this.addGroupsFirstContainerWithSepSplice(new Node[] {loadImageLabel, this.loadImageButton});

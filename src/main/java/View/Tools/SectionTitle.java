@@ -42,12 +42,16 @@ public class SectionTitle extends HBox{
         this.label = new Label(title);
         this.image = image;
 
-        /////////////////
-        // CONFIGURING //
-        ///////////////// 
+        /////////////////////////
+        // CONFIGURING MEMBERS //
+        /////////////////////////
 
         // formatting the label
         this.label.setFont(Font.font(SectionTitle.FONT, SectionTitle.FONT_WEIGHT, SectionTitle.FONT_SIZE));
+
+        //////////////////////
+        // CONFIGURING THIS //
+        //////////////////////
         
         // formatting title
         this.getChildren().addAll(this.image, this.label);

@@ -88,14 +88,14 @@ public abstract class AppToolbar extends HBox{
             this.lastContainer = bottomContainer;
         }
 
-        /////////////////
-        // CONFIGURING //
-        /////////////////
+        //////////////////////
+        // CONFIGURING THIS //
+        //////////////////////
 
         // adding controls
         this.getChildren().addAll(this.firstContainer, this.centerContainer, this.lastContainer);
 
-        // configuring
+        // formatting
         this.setSpacing(this.sectionSpace);
         this.setPadding(new Insets(this.padding));
     }

@@ -79,6 +79,20 @@ public class HybridImageDisplayer extends BorderPane {
         this.hybridImageSlider = new Slider(HybridImageDisplayer.HYBRID_IMAGE_SLIDER_MIN_VALUE, HybridImageDisplayer.HYBRID_IMAGE_SLIDER_MAX_VALUE, 1);
         this.saveHybridImageButton = new Button(HybridImageDisplayer.SAVE_TEXT, new ImageView(Model.SAVE_AS));
 
+        /////////////////////////
+        // CONFIGURING MEMBERS //
+        /////////////////////////
+
+        // configuring image views
+        this.lowPassImageView.setPreserveRatio(true);
+        this.highPassImageView.setPreserveRatio(true);
+        this.hybridImageView.setPreserveRatio(true);
+
+        // configuring hybrid image slider
+        this.hybridImageSlider.setMajorTickUnit(HybridImageDisplayer.HYBRID_IMAGE_SLIDER_MAJOR_TICK_UNIT);
+        this.hybridImageSlider.setShowTickMarks(true);
+        this.hybridImageSlider.setShowTickLabels(true);
+
         ///////////////////////////
         // CONTAINERS AND EXTRAS //
         ///////////////////////////
@@ -139,19 +153,9 @@ public class HybridImageDisplayer extends BorderPane {
         allContainer.setAlignment(Pos.CENTER);
         allContainer.setFillWidth(true);
 
-        /////////////////
-        // CONFIGURING //
-        /////////////////
-
-        // configuring image views
-        this.lowPassImageView.setPreserveRatio(true);
-        this.highPassImageView.setPreserveRatio(true);
-        this.hybridImageView.setPreserveRatio(true);
-
-        // configuring hybrid image slider
-        this.hybridImageSlider.setMajorTickUnit(HybridImageDisplayer.HYBRID_IMAGE_SLIDER_MAJOR_TICK_UNIT);
-        this.hybridImageSlider.setShowTickMarks(true);
-        this.hybridImageSlider.setShowTickLabels(true);
+        //////////////////////
+        // CONFIGURING THIS //
+        //////////////////////
 
         // putting contents into view
         this.setCenter(allContainer);

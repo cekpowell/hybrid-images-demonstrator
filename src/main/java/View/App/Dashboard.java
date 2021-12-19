@@ -63,6 +63,14 @@ public class Dashboard extends BorderPane{
         this.swapSigmaValuesButton = new Button(Dashboard.SWAP_SIGMA_VALUES_BUTTON_TEXT, new ImageView(Model.SWITCH));
         this.makeHybridButton = new Button(Dashboard.MAKE_HYBRID_BUTTON_TEXT, new ImageView(Model.MAKE_HYBRID));
 
+        /////////////////////////
+        // CONFIGURING MEMBERS //
+        /////////////////////////
+
+        // disabling buttons
+        this.swapImagesButton.setDisable(true);
+        this.makeHybridButton.setDisable(true);
+
         ///////////////////////////
         // CONTAINERS AND EXTRAS //
         ///////////////////////////
@@ -105,13 +113,9 @@ public class Dashboard extends BorderPane{
         allContainer.setAlignment(Pos.CENTER);
         allContainer.setFillHeight(true);
 
-        /////////////////
-        // CONFIGURING //
-        /////////////////
-
-        // disabling buttons
-        this.swapImagesButton.setDisable(true);
-        this.makeHybridButton.setDisable(true);
+        //////////////////////
+        // CONFIGURING THIS //
+        //////////////////////
 
         // adding content to dashboard
         this.setTop(appTitleContainer);

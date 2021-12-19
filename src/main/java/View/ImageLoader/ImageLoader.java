@@ -58,6 +58,13 @@ public class ImageLoader extends BorderPane{
         this.loadedImageLabel = new Label();
         this.clearImageButton = new Button(ImageLoader.CLEAR_IMAGE_BUTTON_TEXT, new ImageView(Model.CROSS));
 
+        /////////////////////////
+        // CONFIGURING MEMBERS //
+        /////////////////////////
+
+        // configuring image view
+        this.imageView.setPreserveRatio(true);
+
         ///////////////////////////
         // CONTAINERS AND EXTRAS //
         ///////////////////////////
@@ -81,12 +88,9 @@ public class ImageLoader extends BorderPane{
         clearImageContainer.setAlignment(Pos.CENTER);
         clearImageContainer.setPadding(new Insets(ImageLoader.PADDING));
 
-        /////////////////
-        // CONFIGURING //
-        /////////////////
-
-        // configuring image view
-        this.imageView.setPreserveRatio(true);
+        //////////////////////
+        // CONFIGURING THIS //
+        //////////////////////
 
         // adding contents to view
         this.setTop(titleAndToolbarContainer);
