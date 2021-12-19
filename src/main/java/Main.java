@@ -1,11 +1,10 @@
-import Controller.SystemController;
-import Model.Model;
-import View.App.Dashboard;
-
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import View.App.Dashboard;
+import Controller.SystemController;
+import Model.Model;
 
 /**
  * Main class for the application.

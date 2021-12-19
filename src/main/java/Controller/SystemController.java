@@ -8,8 +8,8 @@ import javafx.scene.paint.Color;
 
 import org.openimaj.image.MBFImage;
 
-import Controller.OpenIMAJ.MyHybridImages;
 import View.App.Dashboard;
+import Controller.OpenIMAJ.MyHybridImages;
 
 /**
  * Main controller for the application. Adopts the singleton pattern and 

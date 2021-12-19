@@ -13,9 +13,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+import View.App.Dashboard;
 import Controller.FileManager;
 import Model.Model;
-import View.App.Dashboard;
 import View.Tools.PopUpWindow;
 import View.Tools.SectionTitle;
 
