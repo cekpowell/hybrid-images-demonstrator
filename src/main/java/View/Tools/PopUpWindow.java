@@ -17,12 +17,14 @@ import javafx.stage.Window;
  */
 public class PopUpWindow {
     
-    // constants
-    // CONFIRMATION WINDOW
-    private static final ButtonType confirm = new ButtonType("Confirm", ButtonBar.ButtonData.OK_DONE);
-    private static final ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-    private static final int width = 300;
-    private static final int height = 100;
+    // CONSTANTS
+    // Confirmation Window
+    private static final ButtonType CONFIRM = new ButtonType("Confirm", ButtonBar.ButtonData.OK_DONE);
+    private static final ButtonType CANCEL = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+    private static final int CONFIRMATION_WINDOW_WIDTH = 300;
+    private static final int CONFIRMATION_WINDOW_HEIGHT = 100;
+    // Error Window
+    private static final String ERROR_WINDOW_TITLE = "Error";
 
     /////////////////////////
     // CONFIRMATION WINDOW //
@@ -39,17 +41,17 @@ public class PopUpWindow {
      */
     public static boolean showConfirmationWindow(Window owner, String title, String message){
         // initializing the alert
-        Alert confirmationWindow = new Alert(AlertType.CONFIRMATION, "", confirm, cancel);
+        Alert confirmationWindow = new Alert(AlertType.CONFIRMATION, "", PopUpWindow.CONFIRM, PopUpWindow.CANCEL);
         confirmationWindow.setTitle(title);
         confirmationWindow.setHeaderText(message);
-        confirmationWindow.getDialogPane().setPrefSize(width, height);
+        confirmationWindow.getDialogPane().setPrefSize(PopUpWindow.CONFIRMATION_WINDOW_WIDTH, PopUpWindow.CONFIRMATION_WINDOW_HEIGHT);
         confirmationWindow.initOwner(owner); 
 
         // displaying the window and getting the result
         Optional<ButtonType> result = confirmationWindow.showAndWait();
 
         // user presses confirm
-        if(result.get() == confirm){
+        if(result.get() == PopUpWindow.CONFIRM){
             return true;
         }
         // user presses cancel (or closes window)
@@ -71,8 +73,8 @@ public class PopUpWindow {
     public static void showErrorWindow(Window owner, Exception exception){
         // initializing error window
         Alert errorWindow = new Alert(AlertType.ERROR, exception.getMessage());
-        errorWindow.setTitle("Error");
-        errorWindow.setHeaderText("Error");
+        errorWindow.setTitle(PopUpWindow.ERROR_WINDOW_TITLE);
+        errorWindow.setHeaderText(PopUpWindow.ERROR_WINDOW_TITLE);
         errorWindow.initOwner(owner);
         
         exception.printStackTrace();
@@ -90,8 +92,8 @@ public class PopUpWindow {
     public static void showErrorWindow(Window owner, String message){
         // initializing error window
         Alert errorWindow = new Alert(AlertType.ERROR, message);
-        errorWindow.setTitle("Error");
-        errorWindow.setHeaderText("Error");
+        errorWindow.setTitle(PopUpWindow.ERROR_WINDOW_TITLE);
+        errorWindow.setHeaderText(PopUpWindow.ERROR_WINDOW_TITLE);
         errorWindow.initOwner(owner);
 
         // showing the error window

@@ -1,6 +1,7 @@
 package View.ImageLoader;
 
 import java.io.File;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -25,10 +26,16 @@ import View.Tools.SectionTitle;
  */
 public class ImageLoader extends BorderPane{
 
-    // constants
-    private static int imagePreviewWidth = 200;
+    // CONSTANTS
+    // Formatting
+    private static final int PADDING = 10;
+    private static final int SPACING = 10;
+    // Image Formatting
+    private static final int IMAGE_PREVIEW_WIDTH = 200;
+    // Control Text
+    private static final String CLEAR_IMAGE_BUTTON_TEXT = "Clear";
     
-    // member variables
+    // MEMBER VARIABLES
     private Dashboard dashboard;
     private ImageLoaderToolbar toolbar;
     private boolean imageLoaded;
@@ -49,7 +56,7 @@ public class ImageLoader extends BorderPane{
         this.imageView = new ImageView();
         this.imageName = "";
         this.loadedImageLabel = new Label();
-        this.clearImageButton = new Button("Clear", new ImageView(Model.CROSS));
+        this.clearImageButton = new Button(ImageLoader.CLEAR_IMAGE_BUTTON_TEXT, new ImageView(Model.CROSS));
 
         ///////////////////////////
         // CONTAINERS AND EXTRAS //
@@ -72,7 +79,7 @@ public class ImageLoader extends BorderPane{
         // container for clear button
         HBox clearImageContainer = new HBox(this.clearImageButton);
         clearImageContainer.setAlignment(Pos.CENTER);
-        clearImageContainer.setPadding(new Insets(10));
+        clearImageContainer.setPadding(new Insets(ImageLoader.PADDING));
 
         /////////////////
         // CONFIGURING //
@@ -129,7 +136,10 @@ public class ImageLoader extends BorderPane{
 
             // checking if file(s) were dropped
             if (db.hasFiles()) {
-                // TODO deal with just first file and ignore rest, or throw error if there is more than one ?
+                /**
+                 * Loads only the first file that was dropped and ignores all
+                 * others.
+                 */
 
                 // gathering first file
                 File selectedFile = db.getFiles().get(0);
@@ -213,6 +223,8 @@ public class ImageLoader extends BorderPane{
     // GETTERS AND SETTERS //
     /////////////////////////
 
+    // GET //
+
     public boolean imageIsLoaded(){
         return this.imageLoaded;
     }
@@ -229,8 +241,15 @@ public class ImageLoader extends BorderPane{
         return this.toolbar;
     }
 
+    // SET //
+
+    /**
+     * Sets an image into loader.
+     * 
+     * @param image The image being placed into the loader.
+     */
     public void setImage(Image image){
-        // updating
+        // updating loader status
         this.imageLoaded = true;
 
         // displaying the image in the view
@@ -238,12 +257,10 @@ public class ImageLoader extends BorderPane{
         this.loadedImageLabel.setText(this.imageName);
 
         // configuring size of image view window
-        this.imageView.setFitWidth(ImageLoader.imagePreviewWidth);
+        this.imageView.setFitWidth(ImageLoader.IMAGE_PREVIEW_WIDTH);
 
-        // enabling the clear image button
+        // enabling controls
         this.clearImageButton.setDisable(false);
-
-        // updating the dashboard controls
         this.dashboard.updateControls();
     }
 }

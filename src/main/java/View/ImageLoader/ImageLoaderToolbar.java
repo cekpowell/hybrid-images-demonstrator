@@ -12,7 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.image.ImageView;
-import javafx.util.converter.FloatStringConverter;
+
 import Controller.FileManager;
 import Model.Model;
 import View.Tools.AppToolbar;
@@ -23,19 +23,30 @@ import View.Tools.PopUpWindow;
  */
 public class ImageLoaderToolbar extends AppToolbar{
 
-    // constants
-    private static int sigmaValueTextFieldWidth = 50;
-    private static String sigmaValueTextFormat = "0.0";
-    private static String initialSigmaValue = "1.0";
-    private static float sigmaValueLargeChange = 1.0f;
-    private static float sigmaValueSmallChange = 0.1f;
-    private static float minSigmaValue = 0.0f;
-    private static float maxSigmaValue = Float.MAX_VALUE;
+    // CONSTANTS
+    // Formatting
+    private static final int PADDING = 10;
+    private static final int SECTION_SPACE = 10;
+    private static final int CONTROL_SPACE = 10;
+    // Sigma Value Text Field
+    private static final int SIGMA_VALUE_TEXTFIELD_WIDTH = 50;
+    private static final String SIGMA_VALUE_TEXT_FORMAT = "0.0";
+    private static final String INITIAL_SIGMA_VALUE = "1.0";
+    private static final float SIGMA_VALUE_LARGE_CHANGE = 1.0f;
+    private static final float SIGMA_VALUE_SMALL_CHANGE = 0.1f;
+    private static final float MIN_SIGMA_VALUE = 0.0f;
+    private static final float MAX_SIGMA_VALUE = Float.MAX_VALUE;
+    // Control Text
+    private static final String LOAD_BUTTON_TEXT = "Load";
+    private static final String LOAD_IMAGE_LABEL_TEXT = "Load Image : ";
+    private static final String SIGMA_VALUE_LABEL_TEXT = "Sigma Value : ";
+    private static final String LOAD_IMAGE_WINDOW_TITLE = "Load Image";
     
-    // member variables
+    // MEMBER VARIABLES
     private ImageLoader imageLoader;
     private Button loadImageButton;
     private TextField sigmaValueTextField;
+    private DecimalFormat sigmaValueFormat;
     private Button incrementSigmaValueButtonLarge;
     private Button decrementSigmaValueButtonLarge;
     private Button incrementSigmaValueButtonSmall;
@@ -50,10 +61,11 @@ public class ImageLoaderToolbar extends AppToolbar{
      */
     public ImageLoaderToolbar(ImageLoader imageLoader){
         // initializing
-        super(Orientation.HORIZONTAL, 10,10,10);
+        super(Orientation.HORIZONTAL, ImageLoaderToolbar.PADDING, ImageLoaderToolbar.SECTION_SPACE, ImageLoaderToolbar.CONTROL_SPACE);
         this.imageLoader = imageLoader;
-        this.loadImageButton = new Button("Load", new ImageView(Model.OPEN));
-        this.sigmaValueTextField = new TextField(ImageLoaderToolbar.initialSigmaValue);
+        this.loadImageButton = new Button(ImageLoaderToolbar.LOAD_BUTTON_TEXT, new ImageView(Model.OPEN));
+        this.sigmaValueTextField = new TextField(ImageLoaderToolbar.INITIAL_SIGMA_VALUE);
+        this.sigmaValueFormat = new DecimalFormat(ImageLoaderToolbar.SIGMA_VALUE_TEXT_FORMAT);
         this.incrementSigmaValueButtonLarge = new Button("", new ImageView(Model.DOUBLE_ADD));
         this.decrementSigmaValueButtonLarge = new Button("",new ImageView(Model.DOUBLE_MINUS));
         this.incrementSigmaValueButtonSmall = new Button("", new ImageView(Model.ADD));
@@ -64,21 +76,18 @@ public class ImageLoaderToolbar extends AppToolbar{
         ///////////////////////////
 
         // labels
-        Label loadImageLabel = new Label("Image : ");
-        Label sigmaValueLabel = new Label("Sigma : ");
+        Label loadImageLabel = new Label(ImageLoaderToolbar.LOAD_IMAGE_LABEL_TEXT);
+        Label sigmaValueLabel = new Label(ImageLoaderToolbar.SIGMA_VALUE_LABEL_TEXT);
 
         /////////////////
         // CONFIGURING //
         /////////////////
         
         // sigma value text field width
-        this.sigmaValueTextField.setMaxWidth(ImageLoaderToolbar.sigmaValueTextFieldWidth);
+        this.sigmaValueTextField.setMaxWidth(ImageLoaderToolbar.SIGMA_VALUE_TEXTFIELD_WIDTH);
 
-        // creating text formatter for sigma value text field
-        DecimalFormat sigmaValueFormat = new DecimalFormat(ImageLoaderToolbar.sigmaValueTextFormat);
-        sigmaValueFormat.setRoundingMode(RoundingMode.HALF_EVEN);
-
-        // congiruing text formatter of sigma value text field
+        // congiruing sigma value text formatter
+        this.sigmaValueFormat.setRoundingMode(RoundingMode.HALF_EVEN);
         this.sigmaValueTextField.setTextFormatter( new TextFormatter<>(c ->{
             if ( c.getControlNewText().isEmpty() )
             {
@@ -114,7 +123,7 @@ public class ImageLoaderToolbar extends AppToolbar{
         // load image
         this.loadImageButton.setOnAction((e) -> {
             // showing the open dialog
-            File selectedFile = FileManager.openFile("Load Image", this.getScene().getWindow(), Model.IMAGE_EXT_FILT_LOAD);
+            File selectedFile = FileManager.openFile(ImageLoaderToolbar.LOAD_IMAGE_WINDOW_TITLE, this.getScene().getWindow(), Model.IMAGE_EXT_FILT_LOAD);
 
             // checking if file was selected
             if (selectedFile != null) {
@@ -130,64 +139,52 @@ public class ImageLoaderToolbar extends AppToolbar{
 
         // increment sigma value large
         this.incrementSigmaValueButtonLarge.setOnAction((e) -> {
-            // gathering current sigma value
-            float currentValue = Float.parseFloat(this.sigmaValueTextField.getText());
-
-            // incrementing value
-            float newValue = currentValue + ImageLoaderToolbar.sigmaValueLargeChange;
-
-             // making sure new value is valid
-            if((newValue >= ImageLoaderToolbar.minSigmaValue && newValue <= ImageLoaderToolbar.maxSigmaValue)){
-                // putting new value into textfield
-                this.sigmaValueTextField.setText(String.valueOf(sigmaValueFormat.format(newValue)));
-            }
+            // changing the sigma value
+            this.changeSigmaValueTextField(ImageLoaderToolbar.SIGMA_VALUE_LARGE_CHANGE);
         });
 
         // decrement sigma value large
         this.decrementSigmaValueButtonLarge.setOnAction((e) -> {
-            // gathering current sigma value
-            float currentValue = Float.parseFloat(this.sigmaValueTextField.getText());
-
-            // incrementing value
-            float newValue = currentValue - ImageLoaderToolbar.sigmaValueLargeChange;
-
-             // making sure new value is valid
-            if((newValue >= ImageLoaderToolbar.minSigmaValue && newValue <= ImageLoaderToolbar.maxSigmaValue)){
-
-                // putting new value into textfield
-                this.sigmaValueTextField.setText(String.valueOf(sigmaValueFormat.format(newValue)));
-            }
+            // changing the sigma value
+            this.changeSigmaValueTextField(-ImageLoaderToolbar.SIGMA_VALUE_LARGE_CHANGE);
         });
 
         // increment sigma value small
         this.incrementSigmaValueButtonSmall.setOnAction((e) -> {
-            // gathering current sigma value
-            float currentValue = Float.parseFloat(this.sigmaValueTextField.getText());
-
-            // incrementing value
-            float newValue = currentValue + ImageLoaderToolbar.sigmaValueSmallChange;
-
-            // making sure new value is valid
-            if((newValue >= ImageLoaderToolbar.minSigmaValue && newValue <= ImageLoaderToolbar.maxSigmaValue)){
-                // putting new value into textfield
-                this.sigmaValueTextField.setText(String.valueOf(sigmaValueFormat.format(newValue)));
-            }
+            // changing the sigma value
+            this.changeSigmaValueTextField(ImageLoaderToolbar.SIGMA_VALUE_SMALL_CHANGE);
         });
 
         // decremment sigma value small
         this.decrementSigmaValueButtonSmall.setOnAction((e) -> {
-            // gathering current sigma value
-            float currentValue = Float.parseFloat(this.sigmaValueTextField.getText());
-
-            // incrementing value
-            float newValue = currentValue - ImageLoaderToolbar.sigmaValueSmallChange;
-
-             // making sure new value is valid
-            if((newValue >= ImageLoaderToolbar.minSigmaValue && newValue <= ImageLoaderToolbar.maxSigmaValue)){
-                // putting new value into textfield
-                this.sigmaValueTextField.setText(String.valueOf(sigmaValueFormat.format(newValue)));
-            }
+            // changing the sigma value
+            this.changeSigmaValueTextField(-ImageLoaderToolbar.SIGMA_VALUE_SMALL_CHANGE);
         });
+    }
+
+    /////////////////////////////
+    // CONFIGURING SIGMA VALUE //
+    /////////////////////////////
+
+    /**
+     * Changes the sigma value text field by the provided amount. The change
+     * will only occur if the new value is valid.
+     * 
+     * @param change The amount (+ or -) that the sigma value is to be changed
+     * by.
+     */
+    private void changeSigmaValueTextField(float change){
+        // gathering current sigma value
+        float currentValue = Float.parseFloat(this.sigmaValueTextField.getText());
+
+        // incrementing value
+        float newValue = currentValue + change;
+
+         // making sure new value is valid
+        if((newValue >= ImageLoaderToolbar.MIN_SIGMA_VALUE && newValue <= ImageLoaderToolbar.MAX_SIGMA_VALUE)){
+            // putting new value into textfield
+            this.sigmaValueTextField.setText(String.valueOf(sigmaValueFormat.format(newValue)));
+        }
     }
 
     /////////////////////////

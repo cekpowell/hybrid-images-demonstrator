@@ -1,7 +1,5 @@
 package View.App;
 
-import Controller.SystemController;
-import Model.Model;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -13,6 +11,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+
+import Controller.SystemController;
+import Model.Model;
 import View.HybridImageDisplayer.HybridImageDisplayer;
 import View.ImageLoader.ImageLoader;
 import View.ImageLoader.SampleImageLoaderForm;
@@ -24,13 +25,19 @@ import View.Tools.PopUpWindow;
  */
 public class Dashboard extends BorderPane{
 
-    // constants
-    private static String lowImageTitle = "Low Image";
-    private static String highImageTitle = "High Image";
-    private static final double lowHighDividerRatio = 0.5;
-    private static final double loadersAndHybridDividersRatio = 0.5;
+    // CONSTANTS
+    // Formatting
+    private static final int PADDING = 10;
+    private static final int SPACING = 10;
+    // Control Content
+    private static final String LOW_IMAGE_TITLE = "Low Image";
+    private static final String HIGH_IMAGE_TITLE = "High Image";
+    private static final String LOAD_SAMPLE_IMAGES_BUTTON_TEXT = "Load Sample Images";
+    private static final String SWAP_IMAGES_BUTTON_TEXT = "Swap Images";
+    private static final String SWAP_SIGMA_VALUES_BUTTON_TEXT = "Swap Sigma Values";
+    private static final String MAKE_HYBRID_BUTTON_TEXT = "Make Hybrid";
     
-    // member variables
+    // MEMBER VARIABLES
     private ImageLoader lowImageLoader;
     private ImageLoader highImageLoader;
     private HybridImageDisplayer hybridImageDisplayer;
@@ -38,7 +45,6 @@ public class Dashboard extends BorderPane{
     private Button swapImagesButton;
     private Button swapSigmaValuesButton;
     private Button makeHybridButton;
-
 
     //////////////////
     // INITIALIZING //
@@ -49,13 +55,13 @@ public class Dashboard extends BorderPane{
      */
     public Dashboard(){
         // initializing
-        this.lowImageLoader = new ImageLoader(this, Dashboard.lowImageTitle, Model.DOWN_ARROW);
-        this.highImageLoader = new ImageLoader(this, Dashboard.highImageTitle, Model.UP_ARROW);
+        this.lowImageLoader = new ImageLoader(this, Dashboard.LOW_IMAGE_TITLE, Model.DOWN_ARROW);
+        this.highImageLoader = new ImageLoader(this, Dashboard.HIGH_IMAGE_TITLE, Model.UP_ARROW);
         this.hybridImageDisplayer = new HybridImageDisplayer(this);
-        this.loadSampleImagesButton = new Button("Load Sample Images", new ImageView(Model.OPEN));
-        this.swapImagesButton = new Button("Swap Images", new ImageView(Model.SWITCH));
-        this.swapSigmaValuesButton = new Button("Swap Sigma Values", new ImageView(Model.SWITCH));
-        this.makeHybridButton = new Button("Make Hybrid", new ImageView(Model.MAKE_HYBRID));
+        this.loadSampleImagesButton = new Button(Dashboard.LOAD_SAMPLE_IMAGES_BUTTON_TEXT, new ImageView(Model.OPEN));
+        this.swapImagesButton = new Button(Dashboard.SWAP_IMAGES_BUTTON_TEXT, new ImageView(Model.SWITCH));
+        this.swapSigmaValuesButton = new Button(Dashboard.SWAP_SIGMA_VALUES_BUTTON_TEXT, new ImageView(Model.SWITCH));
+        this.makeHybridButton = new Button(Dashboard.MAKE_HYBRID_BUTTON_TEXT, new ImageView(Model.MAKE_HYBRID));
 
         ///////////////////////////
         // CONTAINERS AND EXTRAS //
@@ -68,14 +74,14 @@ public class Dashboard extends BorderPane{
         VBox appTitleContainer = new VBox();
         appTitleContainer.getChildren().addAll(appTitle, new Separator(Orientation.HORIZONTAL));
         appTitleContainer.setAlignment(Pos.CENTER);
-        appTitleContainer.setSpacing(10);
+        appTitleContainer.setSpacing(Dashboard.SPACING);
 
         // container to swap high and low images
         HBox loaderControlsContainer = new HBox();
         loaderControlsContainer.getChildren().addAll(this.loadSampleImagesButton, this.swapImagesButton, this.swapSigmaValuesButton);
         loaderControlsContainer.setAlignment(Pos.CENTER);
-        loaderControlsContainer.setPadding(new Insets(10));
-        loaderControlsContainer.setSpacing(10);
+        loaderControlsContainer.setPadding(new Insets(Dashboard.PADDING));
+        loaderControlsContainer.setSpacing(Dashboard.SPACING);
         loaderControlsContainer.setMaxHeight(this.loadSampleImagesButton.getHeight());
 
         // container for high and low image loaders
@@ -89,7 +95,7 @@ public class Dashboard extends BorderPane{
         // container for make hybrid button
         VBox makeHybridContainer = new VBox(this.makeHybridButton);
         makeHybridContainer.setAlignment(Pos.CENTER);
-        makeHybridContainer.setPadding(new Insets(10));
+        makeHybridContainer.setPadding(new Insets(Dashboard.PADDING));
 
         // container for whole dashboard
         HBox allContainer = new HBox();
@@ -202,7 +208,6 @@ public class Dashboard extends BorderPane{
             this.makeHybridButton.setDisable(true);
         }
     }
-
 
     /////////////////////////
     // GETTERS AND SETTERS //

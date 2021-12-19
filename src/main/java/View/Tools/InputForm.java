@@ -1,5 +1,7 @@
 package View.Tools;
 
+import com.esotericsoftware.kryo.io.Input;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -18,10 +20,19 @@ import javafx.stage.Window;
  */
 public abstract class InputForm extends Stage {
 
-    // member variables
+    // CONSTANTS
+    // Formatting
+    private static final int SPACING = 10;
+    private static final int PADDING = 20;
+
+    // MEMBER VARIABLES
     private BorderPane container;
     private Button finishButton;
     private Button cancelButton;
+
+    //////////////////
+    // INITIALIZING //
+    //////////////////
 
     /**
      * Class constructor.
@@ -88,8 +99,8 @@ public abstract class InputForm extends Stage {
         HBox controlsContainer = new HBox();
         controlsContainer.getChildren().addAll(this.cancelButton, this.finishButton);
         controlsContainer.setAlignment(Pos.BASELINE_RIGHT);
-        controlsContainer.setSpacing(10);
-        controlsContainer.setPadding(new Insets(20));
+        controlsContainer.setSpacing(InputForm.SPACING);
+        controlsContainer.setPadding(new Insets(InputForm.PADDING));
 
         // container for divider and controls
         VBox separatorContainer = new VBox();
@@ -114,6 +125,10 @@ public abstract class InputForm extends Stage {
         this.setScene(scene);
     }
 
+    //////////////////////////////
+    // CONFIGURING FORM CONTENT //
+    ///////////////////////////////
+
     /**
      * Sets the content within the input form.
      * 
@@ -123,6 +138,10 @@ public abstract class InputForm extends Stage {
         this.container.setCenter(node);
     }
 
+    /////////////////////
+    // DISPLAYING FORM //
+    /////////////////////
+
     /**
      * Displays the form to the screen.
      * 
@@ -130,9 +149,14 @@ public abstract class InputForm extends Stage {
      */
     public abstract void showForm(Window owner);
 
+    /////////////////////////////
+    // SUBMITTING FORM CONTENT //
+    /////////////////////////////
+
     /**
-     * Verifies the user's inputs are valid. Creates a new object if they are, and displays an error message if they
-     * are not.
+     * Called when the user selects to submit the form.
+     * 
+     * Handles the input of the information into the form.
      */
     public abstract void submit();
 }

@@ -16,20 +16,24 @@ import javafx.scene.text.FontWeight;
  */
 public class AppTitle extends HBox{
 
-    // constants
-    private static final String titleFont = "Verdana";
-    private static final FontWeight titleFontWeight = FontWeight.BOLD;
-    private static final FontPosture titleFontPosture = FontPosture.REGULAR;
-    private static final int titleFontSize = 25;
+    // CONSTANTS
+    // Formatting
+    private static final int PADDING = 10;
+    private static final int SPACING = 10;
+    // Title Font
+    private static final String TITLE_FONT = "Verdana";
+    private static final FontWeight TITLE_FONT_WEIGHT = FontWeight.BOLD;
+    private static final FontPosture TITLE_FONT_POSTURE = FontPosture.REGULAR;
+    private static final int TITLE_FONT_SIZE = 25;
+    // Author Font
+    private static final String AUTHOR_FONT = "Verdana";
+    private static final FontWeight AUTHOR_FONT_WEIGHT = FontWeight.BOLD;
+    private static final FontPosture AUTHOR_FONT_POSTURE = FontPosture.ITALIC;
+    private static final int AUTHOR_FONT_SIZE = 12;
+    // Image
+    private static final int IMAGE_SIZE = 50;
 
-    private static final String authorFont = "Verdana";
-    private static final FontWeight authorFontWeight = FontWeight.BOLD;
-    private static final FontPosture authorFontPosture = FontPosture.ITALIC;
-    private static final int authorFontSize = 12;
-
-    private static final int imageSize = 50;
-
-    // member variables
+    // MEMBER VARIABLES
     private Label titleLabel;
     private Label authorLabel;
     private ImageView imageView;
@@ -57,8 +61,8 @@ public class AppTitle extends HBox{
         /////////////////
 
         // formatting the labels
-        titleLabel.setFont(Font.font(AppTitle.titleFont, AppTitle.titleFontWeight, AppTitle.titleFontPosture, AppTitle.titleFontSize));
-        authorLabel.setFont(Font.font(AppTitle.authorFont, AppTitle.authorFontWeight, AppTitle.authorFontPosture, AppTitle.authorFontSize));
+        titleLabel.setFont(Font.font(AppTitle.TITLE_FONT, AppTitle.TITLE_FONT_WEIGHT, AppTitle.TITLE_FONT_POSTURE, AppTitle.TITLE_FONT_SIZE));
+        authorLabel.setFont(Font.font(AppTitle.AUTHOR_FONT, AppTitle.AUTHOR_FONT_WEIGHT, AppTitle.AUTHOR_FONT_POSTURE, AppTitle.AUTHOR_FONT_SIZE));
 
         // adding the labels to the container
         this.container = new VBox();
@@ -67,13 +71,13 @@ public class AppTitle extends HBox{
 
         // configuring size of image
         this.imageView.setPreserveRatio(true);
-        this.imageView.setFitWidth(AppTitle.imageSize);
+        this.imageView.setFitWidth(AppTitle.IMAGE_SIZE);
 
         // adding the container to the title
         this.getChildren().addAll(this.imageView, container);
 
         // formatting the title page
         this.setAlignment(Pos.CENTER);
-        this.setPadding(new Insets(10,10,10,10));
+        this.setPadding(new Insets(AppTitle.PADDING));
     }
 }

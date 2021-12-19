@@ -9,7 +9,7 @@ import javafx.stage.Window;
  */
 public class ConfirmationButton extends Button {
 
-    // member variables
+    // MEMBER VARIABLES
     private String confirmationTitle;
     private String confirmationMessage;
 
@@ -55,6 +55,10 @@ public class ConfirmationButton extends Button {
         this.confirmationTitle = confirmationTitle;
         this.confirmationMessage = confirmationMessage;
     }
+
+    /////////////////////////////////
+    // SHOWING CONFIRMATION WINDOW //
+    /////////////////////////////////
 
     /**
      * Dsplays the confirmation window to the screen and returns the result.

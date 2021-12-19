@@ -10,7 +10,6 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -18,8 +17,6 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Window;
-
-import java.io.File;
 
 import Model.Model;
 import View.Tools.InputForm;
@@ -31,18 +28,26 @@ import View.Tools.SectionTitle;
  */
 public class SampleImageLoaderForm extends InputForm{
  
-    // constants
-    private static final String title = "Load Sample Images";
-    private static final int width = 500;
-    private static final int height = 700;
-    private static final String confirmText = "Confirm";
-    private static final String cancelText = "Cancel";
-    private static final String headerMessage = "A collection of pairs of images that work well as hybrid images.";
-    private static final int sampleImageLabelWidth = 100;
-    private static final int sampleImagePreviewWidth = 100;
-    
+    // CONSTANTS
+    // Formatting
+    private static final int PADDING = 10;
+    private static final int SPACING = 10;
+    // Form Details
+    private static final String TITLE = "Load Sample Images";
+    private static final int WIDTH = 500;
+    private static final int HEIGHT = 700;
+    private static final String CONFIRM_TEXT = "Confirm";
+    private static final String CANCEL_TEXT = "Cancel";
+    // Header Message
+    private static final String HEADER_MESSAGE_TEXT = "A collection of pairs of images that work well as hybrid images.";
+    private static final Font HEADER_MESSAGE_FONT = Font.font("Verdana", FontWeight.LIGHT, FontPosture.ITALIC, 12);
+    // Sample Image
+    private static final int SAMPLE_IMAGE_LABEL_WIDTH = 100;
+    private static final int SAMPLE_IMAGE_PREVIEW_WIDTH = 100;
+    private static final String LOW_RADIO_BUTTON_TEXT = "Low";
+    private static final String HIGH__RADIO_BUTTON_TEXT = "High";
 
-    // member variables
+    // MEMBER VARIABLES
     private ImageLoader lowImageLoader;
     private ImageLoader highImageLoader;
     private ToggleGroup lowImages;
@@ -57,7 +62,12 @@ public class SampleImageLoaderForm extends InputForm{
      */
     public SampleImageLoaderForm(ImageLoader lowImageLoader, ImageLoader highImageLoader){
         // initializing
-        super(title, width, height, confirmText, cancelText, false);
+        super(SampleImageLoaderForm.TITLE, 
+              SampleImageLoaderForm.WIDTH, 
+              SampleImageLoaderForm.HEIGHT, 
+              SampleImageLoaderForm.CONFIRM_TEXT, 
+              SampleImageLoaderForm.CANCEL_TEXT, 
+              false); /** No confirmation buttons on form submit/close. */
         this.lowImageLoader = lowImageLoader;
         this.highImageLoader = highImageLoader;
         this.lowImages = new ToggleGroup();
@@ -71,8 +81,8 @@ public class SampleImageLoaderForm extends InputForm{
         VBox sampleImages = new VBox();
         sampleImages.setAlignment(Pos.CENTER);
         sampleImages.setFillWidth(true);
-        sampleImages.setSpacing(10);
-        sampleImages.setPadding(new Insets(10));
+        sampleImages.setSpacing(SampleImageLoaderForm.SPACING);
+        sampleImages.setPadding(new Insets(SampleImageLoaderForm.SPACING));
 
         // scroll pane for sample images
         ScrollPane scrollPane = new ScrollPane();
@@ -80,8 +90,8 @@ public class SampleImageLoaderForm extends InputForm{
         scrollPane.setFitToWidth(true);
 
         // header label
-        Label headerLabel = new Label(SampleImageLoaderForm.headerMessage);
-        headerLabel.setFont(Font.font("Verdana", FontWeight.LIGHT, FontPosture.ITALIC, 12));
+        Label headerLabel = new Label(SampleImageLoaderForm.HEADER_MESSAGE_TEXT);
+        headerLabel.setFont(SampleImageLoaderForm.HEADER_MESSAGE_FONT);
 
         // Seperator
         Separator headerSeperator = new Separator(Orientation.HORIZONTAL);
@@ -97,16 +107,16 @@ public class SampleImageLoaderForm extends InputForm{
             // container for this item
             HBox sampleImageContainer = new HBox();
             sampleImageContainer.setAlignment(Pos.CENTER);
-            sampleImageContainer.setSpacing(10);
+            sampleImageContainer.setSpacing(SampleImageLoaderForm.SPACING);
 
             // creating objects
             Label label = new Label(sampleImage.getDisplayName());
-            label.setPrefWidth(SampleImageLoaderForm.sampleImageLabelWidth);
+            label.setPrefWidth(SampleImageLoaderForm.SAMPLE_IMAGE_LABEL_WIDTH);
             ImageView imageView = new ImageView(new Image(Model.SAMPLE_IMAGES_DIR + sampleImage.getFilename()));
             imageView.setPreserveRatio(true);
-            imageView.setFitWidth(SampleImageLoaderForm.sampleImagePreviewWidth);
-            RadioButton lowButton = new RadioButton("Low");
-            RadioButton highButton = new RadioButton("High");
+            imageView.setFitWidth(SampleImageLoaderForm.SAMPLE_IMAGE_PREVIEW_WIDTH);
+            RadioButton lowButton = new RadioButton(SampleImageLoaderForm.LOW_RADIO_BUTTON_TEXT);
+            RadioButton highButton = new RadioButton(SampleImageLoaderForm.HIGH__RADIO_BUTTON_TEXT);
 
             // configuring radio buttons
             lowButton.setUserData(sampleImage);

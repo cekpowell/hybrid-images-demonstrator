@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import Controller.FileManager;
 import Model.Model;
 import View.App.Dashboard;
+import View.Tools.PopUpWindow;
 import View.Tools.SectionTitle;
 
 /**
@@ -24,18 +25,27 @@ import View.Tools.SectionTitle;
  */
 public class HybridImageDisplayer extends BorderPane {
 
-    // constants
-    private static String lowPassTitle = "Low Pass Image";
-    private static String highPassTitle = "High Pass Image";
-    private static String hybridImageTitle = "Hybrid Image";
-    private static int lowAndHighPassImageWidth = 200;
-    private static int lowAndHighPassImageHeight = 200;
-    private static int hybridImageBaseWidth = 400;
-    private static int hybridImageBaseHeight = 400;
-    private static float hybridImageSliderMinValue = 0.1f;
-    private static float hybridImageSliderMaxValue = 1.0f;
+    // CONSTANTS 
+    // Formatting
+    private static final int PADDING = 10;
+    private static final int SPACING = 10;
+    // Section Titles
+    private static final String LOW_PASS_TITLE = "Low Pass Image";
+    private static final String HIGH_PASS_TITLE = "High Pass Image";
+    private static final String HYBRID_TITLE = "Hybrid Image";
+    // Image Format
+    private static final int LOW_AND_HIGH_PASS_IMAGE_WIDTH = 200;
+    private static final int HYBRID_IMAGE_WIDTH = 400;
+    // Slider
+    private static final float HYBRID_IMAGE_SLIDER_MAJOR_TICK_UNIT = 0.1f;
+    private static final float HYBRID_IMAGE_SLIDER_MIN_VALUE = 0.1f;
+    private static final float HYBRID_IMAGE_SLIDER_MAX_VALUE = 1.0f;
+    // Control Content
+    private static final String SAVE_TEXT = "Save";
+    private static final String LOW_PASS_FILE_PREFIX = "Low Pass ";
+    private static final String HIGH_PASS_FILE_PREFIX = "High Pass ";
     
-    // member variables
+    // MEMBER VARIABLES
     private Dashboard dashboard;
     private ImageView lowPassImageView;
     private Image originalLowPassImage;
@@ -60,14 +70,14 @@ public class HybridImageDisplayer extends BorderPane {
         this.dashboard = dashboard;
         this.lowPassImageView = new ImageView();
         this.originalLowPassImage = null;
-        this.saveLowPassImageButton = new Button("Save", new ImageView(Model.SAVE_AS));
+        this.saveLowPassImageButton = new Button(HybridImageDisplayer.SAVE_TEXT, new ImageView(Model.SAVE_AS));
         this.highPassImageView = new ImageView();
         this.originalHighPassImage = null;
-        this.saveHighPassImageButton = new Button("Save", new ImageView(Model.SAVE_AS));
+        this.saveHighPassImageButton = new Button(HybridImageDisplayer.SAVE_TEXT, new ImageView(Model.SAVE_AS));
         this.hybridImageView = new ImageView();
         this.originalHybridImage = null;
-        this.hybridImageSlider = new Slider(HybridImageDisplayer.hybridImageSliderMinValue, HybridImageDisplayer.hybridImageSliderMaxValue, 1);
-        this.saveHybridImageButton = new Button("Save", new ImageView(Model.SAVE_AS));
+        this.hybridImageSlider = new Slider(HybridImageDisplayer.HYBRID_IMAGE_SLIDER_MIN_VALUE, HybridImageDisplayer.HYBRID_IMAGE_SLIDER_MAX_VALUE, 1);
+        this.saveHybridImageButton = new Button(HybridImageDisplayer.SAVE_TEXT, new ImageView(Model.SAVE_AS));
 
         ///////////////////////////
         // CONTAINERS AND EXTRAS //
@@ -75,7 +85,7 @@ public class HybridImageDisplayer extends BorderPane {
 
         // low pass image view //
 
-        SectionTitle lowPassTitleLabel = new SectionTitle(HybridImageDisplayer.lowPassTitle, new ImageView(Model.DOWN_ARROW), Pos.CENTER);
+        SectionTitle lowPassTitleLabel = new SectionTitle(HybridImageDisplayer.LOW_PASS_TITLE, new ImageView(Model.DOWN_ARROW), Pos.CENTER);
         BorderPane lowPassContainer = new BorderPane();
 
         HBox saveLowPassContainer = new HBox(this.saveLowPassImageButton);
@@ -88,12 +98,12 @@ public class HybridImageDisplayer extends BorderPane {
 
         // high pass image view //
 
-        SectionTitle highPassTitleLabel = new SectionTitle(HybridImageDisplayer.highPassTitle, new ImageView(Model.UP_ARROW), Pos.CENTER);
+        SectionTitle highPassTitleLabel = new SectionTitle(HybridImageDisplayer.HIGH_PASS_TITLE, new ImageView(Model.UP_ARROW), Pos.CENTER);
         BorderPane highPassContainer = new BorderPane();
 
         HBox saveHighPassContainer = new HBox(this.saveHighPassImageButton);
         saveHighPassContainer.setAlignment(Pos.CENTER);
-        saveHighPassContainer.setPadding(new Insets(10));
+        saveHighPassContainer.setPadding(new Insets(HybridImageDisplayer.PADDING));
 
         highPassContainer.setTop(highPassTitleLabel);
         highPassContainer.setCenter(this.highPassImageView);
@@ -108,14 +118,14 @@ public class HybridImageDisplayer extends BorderPane {
         lowAndHighPassContainer.setFillHeight(true);
 
         // hybrid image view
-        SectionTitle hybridImageViewTitle = new SectionTitle(HybridImageDisplayer.hybridImageTitle, new ImageView(Model.HYBRID), Pos.CENTER);
+        SectionTitle hybridImageViewTitle = new SectionTitle(HybridImageDisplayer.HYBRID_TITLE, new ImageView(Model.HYBRID), Pos.CENTER);
         BorderPane hybridContainer = new BorderPane();
 
         VBox hybridControlsContainer = new VBox();
         hybridControlsContainer.getChildren().addAll(this.hybridImageSlider, this.saveHybridImageButton);
         hybridControlsContainer.setAlignment(Pos.CENTER);
-        hybridControlsContainer.setPadding(new Insets(10));
-        hybridControlsContainer.setSpacing(10);
+        hybridControlsContainer.setPadding(new Insets(HybridImageDisplayer.PADDING));
+        hybridControlsContainer.setSpacing(HybridImageDisplayer.SPACING);
 
         hybridContainer.setTop(hybridImageViewTitle);
         hybridContainer.setCenter(this.hybridImageView);
@@ -139,7 +149,7 @@ public class HybridImageDisplayer extends BorderPane {
         this.hybridImageView.setPreserveRatio(true);
 
         // configuring hybrid image slider
-        this.hybridImageSlider.setMajorTickUnit(0.1);
+        this.hybridImageSlider.setMajorTickUnit(HybridImageDisplayer.HYBRID_IMAGE_SLIDER_MAJOR_TICK_UNIT);
         this.hybridImageSlider.setShowTickMarks(true);
         this.hybridImageSlider.setShowTickLabels(true);
 
@@ -156,38 +166,35 @@ public class HybridImageDisplayer extends BorderPane {
         // save low pass image
         this.saveLowPassImageButton.setOnAction((e) -> {
             // creating filename
-            String filename = "Low Pass " + this.dashboard.getLowImageLoader().getImageName();
+            String filename = HybridImageDisplayer.LOW_PASS_FILE_PREFIX + this.dashboard.getLowImageLoader().getImageName();
 
             // writing the image to a file
             try{
                 FileManager.writeContentToNewFile(this.originalLowPassImage, this.getScene().getWindow(), filename, Model.IMAGE_EXT_FILT_SAVE);
             }
             catch(Exception ex){
-                // TODO
-                ex.printStackTrace();
+                PopUpWindow.showErrorWindow(this.getScene().getWindow(), new Exception("Unable to save file!"));
             }
         });
 
         // save high pass image
         this.saveHighPassImageButton.setOnAction((e) -> {
             // creating filename
-            String filename = "High Pass " + this.dashboard.getHighImageLoader().getImageName();
+            String filename = HybridImageDisplayer.HIGH_PASS_FILE_PREFIX + this.dashboard.getHighImageLoader().getImageName();
 
             // writing the image to a file
             try{
                 FileManager.writeContentToNewFile(this.originalHighPassImage, this.getScene().getWindow(), filename, Model.IMAGE_EXT_FILT_SAVE);
             }
             catch(Exception ex){
-                // TODO
-                ex.printStackTrace();
+                PopUpWindow.showErrorWindow(this.getScene().getWindow(), new Exception("Unable to save file!"));
             }
         });
 
         // hybrid image size slider
         this.hybridImageSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             // changing hybrid image size
-            this.hybridImageView.setFitWidth(HybridImageDisplayer.hybridImageBaseWidth * newValue.doubleValue());
-            this.hybridImageView.setFitHeight(HybridImageDisplayer.hybridImageBaseWidth * newValue.doubleValue());
+            this.hybridImageView.setFitWidth(HybridImageDisplayer.HYBRID_IMAGE_WIDTH * newValue.doubleValue());
         });
 
         // save hybrid image
@@ -201,8 +208,7 @@ public class HybridImageDisplayer extends BorderPane {
                 FileManager.writeContentToNewFile(this.originalHybridImage, this.getScene().getWindow(), filename, Model.IMAGE_EXT_FILT_SAVE);
             }
             catch(Exception ex){
-                // TODO
-                ex.printStackTrace();
+                PopUpWindow.showErrorWindow(this.getScene().getWindow(), new Exception("Unable to save file!"));
             }
         });
     }
@@ -249,7 +255,7 @@ public class HybridImageDisplayer extends BorderPane {
         this.hybridImageView.setFitWidth(Model.LOADING_ANIMATION_WIDTH);
 
         // resetting controls
-        this.hybridImageSlider.setValue(1.0f);
+        this.hybridImageSlider.setValue(HybridImageDisplayer.HYBRID_IMAGE_SLIDER_MAX_VALUE);
 
         // disabling controls
         this.saveLowPassImageButton.setDisable(true);
@@ -271,8 +277,7 @@ public class HybridImageDisplayer extends BorderPane {
         this.lowPassImageView.setImage(lowPassImage);
 
         // configuring size of image view window
-        this.lowPassImageView.setFitWidth(HybridImageDisplayer.lowAndHighPassImageWidth);
-        this.lowPassImageView.setFitHeight(HybridImageDisplayer.lowAndHighPassImageHeight);
+        this.lowPassImageView.setFitWidth(HybridImageDisplayer.LOW_AND_HIGH_PASS_IMAGE_WIDTH);
 
         // enabling controls
         this.saveLowPassImageButton.setDisable(false);
@@ -291,8 +296,7 @@ public class HybridImageDisplayer extends BorderPane {
         this.highPassImageView.setImage(highPassImage);
 
         // configuring size of image view window
-        this.highPassImageView.setFitWidth(HybridImageDisplayer.lowAndHighPassImageWidth);
-        this.highPassImageView.setFitHeight(HybridImageDisplayer.lowAndHighPassImageHeight);
+        this.highPassImageView.setFitWidth(HybridImageDisplayer.LOW_AND_HIGH_PASS_IMAGE_WIDTH);
 
         // enabling controls
         this.saveHighPassImageButton.setDisable(false);
@@ -311,8 +315,7 @@ public class HybridImageDisplayer extends BorderPane {
         this.hybridImageView.setImage(hybridImage);
 
         // configuring size of image view window
-        this.hybridImageView.setFitWidth(HybridImageDisplayer.hybridImageBaseWidth);
-        this.hybridImageView.setFitHeight(HybridImageDisplayer.hybridImageBaseHeight);
+        this.hybridImageView.setFitWidth(HybridImageDisplayer.HYBRID_IMAGE_WIDTH);
 
         // enabling controls
         this.hybridImageSlider.setDisable(false);

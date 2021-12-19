@@ -1,17 +1,13 @@
 package Controller;
 
-import java.io.File;
-
-import org.openimaj.image.ImageUtilities;
-import org.openimaj.image.MBFImage;
-
-import javafx.animation.PauseTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
-import javafx.util.Duration;
+
+import org.openimaj.image.MBFImage;
+
 import Controller.OpenIMAJ.MyHybridImages;
 import View.App.Dashboard;
 

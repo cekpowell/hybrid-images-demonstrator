@@ -3,8 +3,9 @@ package Controller;
 import java.io.File;
 import java.util.Arrays;
 
-import Model.Model;
 import javafx.scene.image.Image;
+
+import Model.Model;
 
 /**
  * Static class that defines methods to validate input information (e.g.,

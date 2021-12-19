@@ -198,9 +198,9 @@ public class Model {
         }
     }
 
-    ///////////
-    // FILES //
-    ///////////
+    /////////////////////
+    // FILE EXTENSIONS //
+    /////////////////////
 
     public static final String[] IMAGE_EXT = new String[] {"png", "jpeg"};
     public static final ExtensionFilter[] IMAGE_EXT_FILT_LOAD = new ExtensionFilter[] {new ExtensionFilter("Image (*.png, *jpeg)", "*.png", "*.jpeg")};

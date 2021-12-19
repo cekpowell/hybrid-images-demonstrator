@@ -17,12 +17,11 @@ import javafx.scene.layout.VBox;
  */
 public abstract class AppToolbar extends HBox{ 
 
-    // member variables
+    // MEMBER VARIABLES
     private Orientation orientation;
     private int padding;
     private int sectionSpace;
     private int controlSpace;
-
     private Pane firstContainer;
     private Pane centerContainer;
     private Pane lastContainer;
