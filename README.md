@@ -141,7 +141,7 @@ mvn clean package
 
 <p align="center"><img width="650" alt="New File Created" src="https://user-images.githubusercontent.com/60888912/146680564-05b653ac-6ca7-470b-82e5-dca2c4b773c7.png"></p>
 
-- When pressed, the hybrid image will be generated and displayed in the right hand side of the application. The low and high pass versions of the low and high images respectivley will also be displayed.
+- When pressed, the hybrid image will be generated and displayed in the right hand side of the application. The low and high pass versions of the low and high images respectivley will also be displayed. Note that, the low and high images must have the same dimensions for the hybrid image to be generated - an error message will be displayed if this is not the case.
 
 <video alt="Make Hybrid Process" src="https://user-images.githubusercontent.com/60888912/146680619-6485c455-b7ad-4e65-a905-5110908470af.mov" width="550"></video>
 
