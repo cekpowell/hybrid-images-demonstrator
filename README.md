@@ -2,7 +2,7 @@
 
 ---
 
-<video alt="Demonstration" src="/Users/charlie/Desktop/Demonstration.mov" width="550"></video>
+<video alt="Demonstration" src="https://user-images.githubusercontent.com/60888912/146680768-9e17719f-696b-41ab-bf5e-26995a8f608c.mov" width="550"></video>
 
 ---
 
@@ -42,8 +42,6 @@
   - **High Image View**: Used to input the image whose high frequencies will be used in the hybrid image, and control the parameters of this process.
   - **Output View**: Displays the low and high pass versions of the respective input images, and the resulting hybrid image made by combining these low and high pass versions.
 
-
-
 ---
 
 ## Running The Application
@@ -76,7 +74,7 @@ mvn clean package
 
 - On start up, the application should look like this:
 
-<img src="/Users/charlie/Desktop/Application Startup.png" alt="Application Startup" style="zoom:45%;" />
+<p align="center"><img width="650" alt="New File Created" src="https://user-images.githubusercontent.com/60888912/146680040-cb4f433b-09c0-4d7e-be7e-fa1ba7855773.png"></p>
 
 ---
 
@@ -93,11 +91,11 @@ mvn clean package
 
 - Each Image Loader has a toolbar, which contains a `Load` button that can be used to load an image from the local system into the application
 
-<img src="/Users/charlie/Desktop/Load Images.png" alt="Load Images" style="zoom:6%;" />
+<p align="center"><img width="650" alt="New File Created" src="https://user-images.githubusercontent.com/60888912/146680121-7f24f121-f75a-4b58-9cbd-539fb0c98173.png"></p>
 
 - When an image has been successfully loaded, a preview of the image will appear in the Image loader.
 
-<img src="/Users/charlie/Desktop/Image Loaded.png" alt="Image Loaded" style="zoom:45%;" />
+<p align="center"><img width="650" alt="New File Created" src="https://user-images.githubusercontent.com/60888912/146680212-f0e5b632-b3a6-451d-8502-2df19126233e.png"></p>
 
 - It is also possible to **drag-and-drop** a file into an image loader in order to load it into the application.
 
@@ -109,25 +107,25 @@ mvn clean package
 
 - Contained in the toolbar between the two image loaders is the `Load Sample Image` button, which can be used to load images from a collection of pairs of images that are known to work well as hybrid images.
 
-<img src="/Users/charlie/Desktop/Load Sample Images Button.png" alt="Load Sample Images Button" style="zoom:6%;" />
+<p align="center"><img width="650" alt="New File Created" src="https://user-images.githubusercontent.com/60888912/146680264-35ca9378-c29f-439e-b8dd-fae4698a57bb.png"></p>
 
 - Once selected, a window is displayed that allows for each sample image to be loaded into the application as either a low or high image.
 
-<img src="/Users/charlie/Desktop/Load Sample Images.png" alt="Load Sample Images" style="zoom:45%;" />
+<p align="center"><img width="650" alt="New File Created" src="https://user-images.githubusercontent.com/60888912/146680243-1bf9dfc0-451d-40f7-8f96-e01f050bf1be.png"></p>
 
 #### Configuring Image Sigma Values
 
 - Both the low and high images require the input of a **sigma value**, which determines how much of the low/high frequencies of the image are used in the resulting hybrid image.
 - Each loader's toolbar has a textfield and collection of buttons that allow for the configuration of this sigma value.
 
-<img src="/Users/charlie/Desktop/Sigma Values.png" alt="Sigma Values" style="zoom:6%;" />
+<p align="center"><img width="650" alt="New File Created" src="https://user-images.githubusercontent.com/60888912/146680331-682ae99f-9a41-419b-bbdd-6766856d7033.png"></p>
 
 #### Swapping Images and Sigma Values
 
 - The toolbar between the two image loaders contains two buttons (`Swap Images` and `Swap Sigma Values`) that allow for the high and low images and sigma values to be swapped (so that the high becomes the low, and the low becomes the high). 
 - Note that the `Swap Images` button is only enabled when both the low and high image loaders have images loaded into them.
 
-<img src="/Users/charlie/Desktop/Swap Images and Sigma Values.png" alt="Swap Images and Sigma Values" style="zoom:6%;" />
+<p align="center"><img width="650" alt="New File Created" src="https://user-images.githubusercontent.com/60888912/146680460-6eec67e5-38ce-4a0f-aa16-4f75a6215365.png"></p>
 
 - Between the two loader images is a toolbar that contains three controls:
 
@@ -141,21 +139,21 @@ mvn clean package
 
 - Once both image loaders have images loaded into them, the `Make Hybrid` button will become enabled, and can be used to form a hybrid image of the low and high images.
 
-<img src="/Users/charlie/Desktop/Make Hybrid Button.png" alt="Make Hybrid Button" style="zoom:6%;" />
+<p align="center"><img width="650" alt="New File Created" src="https://user-images.githubusercontent.com/60888912/146680564-05b653ac-6ca7-470b-82e5-dca2c4b773c7.png"></p>
 
 - When pressed, the hybrid image will be generated and displayed in the right hand side of the application. The low and high pass versions of the low and high images respectivley will also be displayed.
 
-<video alt="Make Hybrid Process" src="/Users/charlie/Desktop/Make Hybrid Process.mov" width="550"></video>
+<video alt="Make Hybrid Process" src="https://user-images.githubusercontent.com/60888912/146680619-6485c455-b7ad-4e65-a905-5110908470af.mov" width="550"></video>
 
 - When the hybrid image has been generated, the slider will become enabled, which can be used to change its size (useful for demonstrating the effect of the hybrid image).
 
-<video alt="Hybrid Image Slider" src="/Users/charlie/Desktop/Hybrid Image Slider.mov" width="550"></video>
+<video alt="Hybrid Image Slider" src="https://user-images.githubusercontent.com/60888912/146680659-a4a9872d-6415-4074-9ccb-12bc58edc678.mov" width="550"></video>
 
 ### Saving Output Images
 
 - When a hybrid image has been demonstrated, the `Save` buttons under the hybrid image and the low and high pass images can be used to save each image to the local system.
 
-<img src="/Users/charlie/Desktop/Save Output.png" alt="Save Output" style="zoom:6%;" />
+<p align="center"><img width="650" alt="New File Created" src="https://user-images.githubusercontent.com/60888912/146680710-6fb7312e-ec5a-4c85-b567-be70865fc0cb.png"></p>
 
 ---
 
