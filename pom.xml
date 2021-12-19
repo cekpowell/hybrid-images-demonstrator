@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>charlie.powell</groupId>
     <artifactId>hybrid-images-demonstrator</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
     <properties>
         <openimaj.version>1.3.10</openimaj.version>
